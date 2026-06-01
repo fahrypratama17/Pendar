@@ -1,7 +1,7 @@
 import 'package:go_router/go_router.dart';
-import '../services/views/onboarding/onboarding_view.dart';
-import '../services/views/auth/auth_view.dart';
-import '../services/views/home/home_view.dart';
+import '../views/onboarding/onboarding_view.dart';
+import '../views/auth/auth_view.dart';
+import '../views/home/home_view.dart';
 
 class AppRoutes {
   AppRoutes._();
