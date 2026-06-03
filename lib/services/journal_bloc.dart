@@ -3,6 +3,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'journal_event.dart';
 import 'journal_state.dart';
 import '../models/journal_model.dart';
+import '../utils/error_translator.dart';
 
 class JournalBloc extends Bloc<JournalEvent, JournalState> {
   final SupabaseClient _supabaseClient = Supabase.instance.client;
@@ -34,7 +35,7 @@ class JournalBloc extends Bloc<JournalEvent, JournalState> {
           .toList();
       emit(JournalLoadSuccess(journals));
     } catch (e) {
-      emit(JournalFailure(e.toString()));
+      emit(JournalFailure(ErrorTranslator.translate(e)));
     }
   }
 
@@ -55,7 +56,7 @@ class JournalBloc extends Bloc<JournalEvent, JournalState> {
       });
       emit(JournalOperationSuccess());
     } catch (e) {
-      emit(JournalFailure(e.toString()));
+      emit(JournalFailure(ErrorTranslator.translate(e)));
     }
   }
 
@@ -71,7 +72,7 @@ class JournalBloc extends Bloc<JournalEvent, JournalState> {
       }).eq('id', event.id);
       emit(JournalOperationSuccess());
     } catch (e) {
-      emit(JournalFailure(e.toString()));
+      emit(JournalFailure(ErrorTranslator.translate(e)));
     }
   }
 
@@ -82,7 +83,7 @@ class JournalBloc extends Bloc<JournalEvent, JournalState> {
       await _supabaseClient.from('journals').delete().eq('id', event.id);
       emit(JournalOperationSuccess());
     } catch (e) {
-      emit(JournalFailure(e.toString()));
+      emit(JournalFailure(ErrorTranslator.translate(e)));
     }
   }
 }

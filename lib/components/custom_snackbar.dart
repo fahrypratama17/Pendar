@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../config/themes.dart';
+import '../utils/error_translator.dart';
 
 class CustomSnackBar {
   CustomSnackBar._();
@@ -17,10 +19,14 @@ class CustomSnackBar {
       _currentEntry = null;
     }
 
+    final String translatedMessage = isError
+        ? ErrorTranslator.translate(message)
+        : message;
+
     final overlay = Overlay.of(context);
     _currentEntry = OverlayEntry(
       builder: (context) => _NotificationToast(
-        message: message,
+        message: translatedMessage,
         isError: isError,
         onDismiss: () {
           if (_currentEntry != null) {
@@ -118,34 +124,38 @@ class _NotificationToastState extends State<_NotificationToast>
             },
             child: Material(
               color: Colors.transparent,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
-                decoration: BoxDecoration(
-                  color: AppColors.secondary,
-                  borderRadius: BorderRadius.circular(16.0),
-                  border: Border.all(
-                    color: widget.isError
-                        ? Colors.redAccent.withValues(alpha: 0.4)
-                        : AppColors.primary.withValues(alpha: 0.4),
-                    width: 1.5,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.3),
-                      blurRadius: 16.0,
-                      offset: const Offset(0, 8),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16.0),
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
+                    decoration: BoxDecoration(
+                      color: AppColors.secondary.withValues(alpha: 0.8),
+                      borderRadius: BorderRadius.circular(16.0),
+                      border: Border.all(
+                        color: widget.isError
+                            ? Colors.redAccent.withValues(alpha: 0.3)
+                            : AppColors.primary.withValues(alpha: 0.3),
+                        width: 1.5,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.3),
+                          blurRadius: 16.0,
+                          offset: const Offset(0, 8),
+                        ),
+                        BoxShadow(
+                          color: widget.isError
+                              ? Colors.redAccent.withValues(alpha: 0.05)
+                              : AppColors.primary.withValues(alpha: 0.05),
+                          blurRadius: 8.0,
+                          spreadRadius: 1.0,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
                     ),
-                    BoxShadow(
-                      color: widget.isError
-                          ? Colors.redAccent.withValues(alpha: 0.05)
-                          : AppColors.primary.withValues(alpha: 0.05),
-                      blurRadius: 8.0,
-                      spreadRadius: 1.0,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: Row(
+                    child: Row(
                   children: [
                     Container(
                       padding: const EdgeInsets.all(8.0),
@@ -210,6 +220,8 @@ class _NotificationToastState extends State<_NotificationToast>
           ),
         ),
       ),
-    );
+    ),
+  ),
+);
   }
 }

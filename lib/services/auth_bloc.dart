@@ -4,6 +4,7 @@ import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 import 'auth_event.dart';
 import 'auth_state.dart';
 import '../models/user_model.dart';
+import '../utils/error_translator.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final SupabaseClient _supabaseClient = Supabase.instance.client;
@@ -127,7 +128,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     } catch (e) {
       emit(AuthFailure(_getErrorMessage(e)));
     }
-  }  Future<void> _onProfileUpdated(AuthProfileUpdated event, Emitter<AuthState> emit) async {
+  }
+
+  Future<void> _onProfileUpdated(AuthProfileUpdated event, Emitter<AuthState> emit) async {
     final currentState = state;
     if (currentState is AuthAuthenticated) {
       emit(AuthLoading());
@@ -190,7 +193,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           email: user.email ?? '',
           university: currentState.user.university,
           avatarUrl: publicUrl,
-          );
+        );
         emit(AuthAuthenticated(updatedUser));
       } catch (e) {
         emit(AuthFailure(_getErrorMessage(e)));
@@ -199,22 +202,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-
   String _getErrorMessage(dynamic e) {
-    if (e is AuthException) {
-      switch (e.code) {
-        case 'otp_expired':
-          return 'Kode verifikasi telah kedaluwarsa. Silakan kirim kode baru.';
-        case 'invalid_credentials':
-          return 'Email atau password salah.';
-        case 'email_not_confirmed':
-          return 'Email Anda belum dikonfirmasi. Silakan konfirmasi email Anda.';
-        case 'user_already_exists':
-          return 'Email sudah terdaftar. Silakan gunakan email lain atau masuk.';
-        default:
-          return e.message;
-      }
-    }
-    return e.toString();
+    return ErrorTranslator.translate(e);
   }
 }

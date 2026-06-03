@@ -3,6 +3,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'schedule_event.dart';
 import 'schedule_state.dart';
 import '../models/schedule_model.dart';
+import '../utils/error_translator.dart';
 
 class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
   final SupabaseClient _supabaseClient = Supabase.instance.client;
@@ -35,7 +36,7 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
           .toList();
       emit(ScheduleLoadSuccess(schedules));
     } catch (e) {
-      emit(ScheduleFailure(e.toString()));
+      emit(ScheduleFailure(ErrorTranslator.translate(e)));
     }
   }
 
@@ -57,7 +58,7 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
       });
       emit(ScheduleOperationSuccess());
     } catch (e) {
-      emit(ScheduleFailure(e.toString()));
+      emit(ScheduleFailure(ErrorTranslator.translate(e)));
     }
   }
 
@@ -75,7 +76,7 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
       }).eq('id', event.id);
       emit(ScheduleOperationSuccess());
     } catch (e) {
-      emit(ScheduleFailure(e.toString()));
+      emit(ScheduleFailure(ErrorTranslator.translate(e)));
     }
   }
 
@@ -88,7 +89,7 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
       }).eq('id', event.id);
       add(ScheduleLoadRequested());
     } catch (e) {
-      emit(ScheduleFailure(e.toString()));
+      emit(ScheduleFailure(ErrorTranslator.translate(e)));
     }
   }
 
@@ -99,7 +100,7 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
       await _supabaseClient.from('schedule').delete().eq('id', event.id);
       emit(ScheduleOperationSuccess());
     } catch (e) {
-      emit(ScheduleFailure(e.toString()));
+      emit(ScheduleFailure(ErrorTranslator.translate(e)));
     }
   }
 }
