@@ -688,7 +688,7 @@ class _ScheduleViewState extends State<ScheduleView> {
                                                               schedule.taskName,
                                                               style: TextStyle(
                                                                 fontFamily: 'Poppins',
-                                                                fontSize: 16.0,
+                                                                fontSize: 18.0,
                                                                 fontWeight: FontWeight.bold,
                                                                 color: schedule.isCompleted
                                                                     ? AppColors.palePurple300.withValues(alpha: 0.5)
@@ -727,7 +727,7 @@ class _ScheduleViewState extends State<ScheduleView> {
                                                           overflow: TextOverflow.ellipsis,
                                                           style: TextStyle(
                                                             fontFamily: 'Poppins',
-                                                            fontSize: 13.0,
+                                                            fontSize: 14.0,
                                                             color: schedule.isCompleted
                                                                 ? AppColors.palePurple900.withValues(alpha: 0.5)
                                                                 : AppColors.palePurple400,
@@ -741,38 +741,46 @@ class _ScheduleViewState extends State<ScheduleView> {
                                                       const SizedBox(height: 12.0),
                                                       Row(
                                                         children: [
-                                                          Icon(
-                                                            Icons.access_time_outlined,
-                                                            size: 14.0,
-                                                            color: schedule.isCompleted
-                                                                ? AppColors.palePurple900.withValues(alpha: 0.5)
-                                                                : AppColors.palePurple400,
+                                                          SvgPicture.asset(
+                                                            'assets/icon/Iconjam.svg',
+                                                            colorFilter: ColorFilter.mode(
+                                                              schedule.isCompleted
+                                                                  ? AppColors.palePurple900.withValues(alpha: 0.5)
+                                                                  : AppColors.palePurple400,
+                                                              BlendMode.srcIn,
+                                                            ),
+                                                            width: 14.0,
+                                                            height: 14.0,
                                                           ),
-                                                          const SizedBox(width: 4.0),
+                                                          const SizedBox(width: 6.0),
                                                           Text(
                                                             _formatTime(schedule.deadline),
                                                             style: TextStyle(
                                                               fontFamily: 'Poppins',
-                                                              fontSize: 11.0,
+                                                              fontSize: 12.0,
                                                               color: schedule.isCompleted
                                                                   ? AppColors.palePurple900.withValues(alpha: 0.5)
                                                                   : AppColors.palePurple400,
                                                             ),
                                                           ),
                                                           const SizedBox(width: 16.0),
-                                                          Icon(
-                                                            Icons.calendar_today_outlined,
-                                                            size: 14.0,
-                                                            color: schedule.isCompleted
-                                                                ? AppColors.palePurple900.withValues(alpha: 0.5)
-                                                                : AppColors.palePurple400,
+                                                          SvgPicture.asset(
+                                                            'assets/icon/Icondate.svg',
+                                                            colorFilter: ColorFilter.mode(
+                                                              schedule.isCompleted
+                                                                  ? AppColors.palePurple900.withValues(alpha: 0.5)
+                                                                  : AppColors.palePurple400,
+                                                              BlendMode.srcIn,
+                                                            ),
+                                                            width: 14.0,
+                                                            height: 14.0,
                                                           ),
-                                                          const SizedBox(width: 4.0),
+                                                          const SizedBox(width: 6.0),
                                                           Text(
                                                             _formatDate(schedule.deadline),
                                                             style: TextStyle(
                                                               fontFamily: 'Poppins',
-                                                              fontSize: 11.0,
+                                                              fontSize: 12.0,
                                                               color: schedule.isCompleted
                                                                   ? AppColors.palePurple900.withValues(alpha: 0.5)
                                                                   : AppColors.palePurple400,
