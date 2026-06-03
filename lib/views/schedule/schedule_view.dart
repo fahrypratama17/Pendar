@@ -124,7 +124,19 @@ class _ScheduleViewState extends State<ScheduleView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
+      backgroundColor: Colors.transparent,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              AppColors.purple100.withValues(alpha: 0.08),
+              AppColors.neutral,
+            ],
+          ),
+        ),
+        child: SafeArea(
         child: BlocListener<ScheduleBloc, ScheduleState>(
           listener: (context, state) {
             if (state is ScheduleOperationSuccess && _isAdding) {
@@ -615,14 +627,7 @@ class _ScheduleViewState extends State<ScheduleView> {
                               child: Container(
                                 margin: const EdgeInsets.only(bottom: 16.0),
                                 decoration: BoxDecoration(
-                                  gradient: const LinearGradient(
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                    colors: [
-                                      Color(0xFF2A2448),
-                                      AppColors.secondary,
-                                    ],
-                                  ),
+                                  color: AppColors.secondary,
                                   borderRadius: BorderRadius.circular(16.0),
                                   border: Border.all(
                                     color: const Color(0xFF2E284F),
@@ -815,6 +820,8 @@ class _ScheduleViewState extends State<ScheduleView> {
             ),
           ),
         ),
+        ),
+      ),
       ),
     );
   }

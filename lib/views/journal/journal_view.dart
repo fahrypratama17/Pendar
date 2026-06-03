@@ -45,7 +45,19 @@ class _JournalViewState extends State<JournalView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
+      backgroundColor: Colors.transparent,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              AppColors.purple100.withValues(alpha: 0.08),
+              AppColors.neutral,
+            ],
+          ),
+        ),
+        child: SafeArea(
         child: Column(
           children: [
             Padding(
@@ -213,14 +225,7 @@ class _JournalViewState extends State<JournalView> {
                               margin: const EdgeInsets.only(bottom: 16.0),
                               padding: const EdgeInsets.all(20.0),
                               decoration: BoxDecoration(
-                                gradient: const LinearGradient(
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                  colors: [
-                                    Color(0xFF2A2448),
-                                    AppColors.secondary,
-                                  ],
-                                ),
+                                color: AppColors.secondary,
                                 borderRadius: BorderRadius.circular(16.0),
                                 border: Border.all(
                                   color: const Color(0xFF2E284F),
@@ -288,6 +293,7 @@ class _JournalViewState extends State<JournalView> {
             ),
           ],
         ),
+      ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
