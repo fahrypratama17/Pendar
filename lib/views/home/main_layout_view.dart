@@ -50,18 +50,6 @@ class _MainLayoutViewState extends State<MainLayoutView> {
           children: [
             Container(
               padding: const EdgeInsets.all(6.0),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                boxShadow: isActive
-                    ? [
-                        BoxShadow(
-                          color: AppColors.primary.withValues(alpha: 0.25),
-                          blurRadius: 16.0,
-                          spreadRadius: 2.0,
-                        )
-                      ]
-                    : null,
-              ),
               child: SvgPicture.asset(
                 iconPath,
                 colorFilter: ColorFilter.mode(

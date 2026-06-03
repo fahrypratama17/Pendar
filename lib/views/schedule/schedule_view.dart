@@ -164,24 +164,17 @@ class _ScheduleViewState extends State<ScheduleView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
+                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                        padding: const EdgeInsets.all(8.0),
-                        decoration: const BoxDecoration(
-                          color: AppColors.secondary,
-                          shape: BoxShape.circle,
+                      SvgPicture.asset(
+                        'assets/icon/Iconstress.svg',
+                        colorFilter: const ColorFilter.mode(
+                          AppColors.primary,
+                          BlendMode.srcIn,
                         ),
-                        child: SvgPicture.asset(
-                          'assets/icon/Iconmind.svg',
-                          colorFilter: const ColorFilter.mode(
-                            AppColors.primary,
-                            BlendMode.srcIn,
-                          ),
-                          width: 24.0,
-                          height: 24.0,
-                        ),
+                        width: 24.0,
+                        height: 28.0,
                       ),
                       const Text(
                         'Pendar',
@@ -192,13 +185,26 @@ class _ScheduleViewState extends State<ScheduleView> {
                           color: AppColors.palePurple50,
                         ),
                       ),
-                      IconButton(
-                        icon: const Icon(
-                          Icons.account_circle_outlined,
-                          color: AppColors.palePurple400,
-                          size: 28.0,
+                      Container(
+                        width: 40.0,
+                        height: 40.0,
+                        decoration: BoxDecoration(
+                          color: AppColors.secondary,
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: AppColors.darkPurple600,
+                            width: 1.0,
+                          ),
                         ),
-                        onPressed: () {},
+                        child: IconButton(
+                          padding: EdgeInsets.zero,
+                          icon: const Icon(
+                            Icons.person_outline,
+                            color: AppColors.palePurple400,
+                            size: 20.0,
+                          ),
+                          onPressed: () {},
+                        ),
                       ),
                     ],
                   ),

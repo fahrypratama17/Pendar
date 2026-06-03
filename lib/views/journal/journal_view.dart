@@ -53,21 +53,14 @@ class _JournalViewState extends State<JournalView> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    padding: const EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                      color: AppColors.secondary,
-                      shape: BoxShape.circle,
+                  SvgPicture.asset(
+                    'assets/icon/Iconstress.svg',
+                    colorFilter: const ColorFilter.mode(
+                      AppColors.primary,
+                      BlendMode.srcIn,
                     ),
-                    child: SvgPicture.asset(
-                      'assets/icon/Iconmind.svg',
-                      colorFilter: const ColorFilter.mode(
-                        AppColors.primary,
-                        BlendMode.srcIn,
-                      ),
-                      width: 24.0,
-                      height: 24.0,
-                    ),
+                    width: 24.0,
+                    height: 28.0,
                   ),
                   const Text(
                     'Pendar',
@@ -78,13 +71,26 @@ class _JournalViewState extends State<JournalView> {
                       color: AppColors.palePurple50,
                     ),
                   ),
-                  IconButton(
-                    icon: const Icon(
-                      Icons.account_circle_outlined,
-                      color: AppColors.palePurple400,
-                      size: 28.0,
+                  Container(
+                    width: 40.0,
+                    height: 40.0,
+                    decoration: BoxDecoration(
+                      color: AppColors.secondary,
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: AppColors.darkPurple600,
+                        width: 1.0,
+                      ),
                     ),
-                    onPressed: () {},
+                    child: IconButton(
+                      padding: EdgeInsets.zero,
+                      icon: const Icon(
+                        Icons.person_outline,
+                        color: AppColors.palePurple400,
+                        size: 20.0,
+                      ),
+                      onPressed: () {},
+                    ),
                   ),
                 ],
               ),
@@ -209,7 +215,7 @@ class _JournalViewState extends State<JournalView> {
                             },
                             child: Container(
                               margin: const EdgeInsets.only(bottom: 16.0),
-                              padding: const EdgeInsets.all(20.0),
+                              padding: const EdgeInsets.all(24.0),
                               decoration: BoxDecoration(
                                 color: AppColors.secondary,
                                 borderRadius: BorderRadius.circular(16.0),
@@ -228,7 +234,7 @@ class _JournalViewState extends State<JournalView> {
                                         _formatDate(journal.createdAt),
                                         style: const TextStyle(
                                           fontFamily: 'Poppins',
-                                          fontSize: 12.0,
+                                          fontSize: 13.0,
                                           fontWeight: FontWeight.w500,
                                           color: AppColors.palePurple400,
                                         ),
@@ -236,12 +242,12 @@ class _JournalViewState extends State<JournalView> {
                                       Text(
                                         _moodEmojis[moodIdx],
                                         style: const TextStyle(
-                                          fontSize: 22.0,
+                                          fontSize: 18.0,
                                         ),
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(height: 8.0),
+                                  const SizedBox(height: 10.0),
                                   Text(
                                     journal.title,
                                     maxLines: 1,
@@ -253,7 +259,7 @@ class _JournalViewState extends State<JournalView> {
                                       color: AppColors.palePurple50,
                                     ),
                                   ),
-                                  const SizedBox(height: 6.0),
+                                  const SizedBox(height: 8.0),
                                   Text(
                                     journal.content,
                                     maxLines: 2,
