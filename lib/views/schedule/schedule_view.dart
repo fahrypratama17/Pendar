@@ -469,8 +469,8 @@ class _ScheduleViewState extends State<ScheduleView> {
                                       }
                                     },
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: AppColors.primary,
-                                foregroundColor: Colors.white,
+                                backgroundColor: AppColors.purple100,
+                                foregroundColor: AppColors.neutral900,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(26.0),
                                 ),

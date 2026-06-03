@@ -293,10 +293,10 @@ class _JournalViewState extends State<JournalView> {
         onPressed: () {
           context.push(AppRoutes.newJournal);
         },
-        backgroundColor: AppColors.primary,
-        foregroundColor: Colors.white,
+        backgroundColor: AppColors.purple100,
+        foregroundColor: AppColors.neutral900,
         shape: const CircleBorder(),
-        elevation: 6.0,
+        elevation: 4.0,
         child: const Icon(
           Icons.add,
           size: 28.0,
