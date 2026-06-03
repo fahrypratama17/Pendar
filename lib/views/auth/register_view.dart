@@ -6,6 +6,7 @@ import '../../config/routes.dart';
 import '../../services/auth_bloc.dart';
 import '../../services/auth_event.dart';
 import '../../services/auth_state.dart';
+import '../../components/custom_snackbar.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -38,17 +39,11 @@ class _RegisterViewState extends State<RegisterView> {
         listener: (context, state) {
           if (state is AuthAuthenticated) {
             context.go(AppRoutes.home);
+          } else if (state is AuthNeedsVerification) {
+            context.go('${AppRoutes.confirmEmail}?email=${state.email}');
+            CustomSnackBar.show(context, message: state.message, isError: false);
           } else if (state is AuthFailure) {
-            if (state.message.contains('successful') || state.message.contains('confirm')) {
-              context.go('${AppRoutes.confirmEmail}?email=${_emailController.text.trim()}');
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.message),
-                  backgroundColor: Colors.redAccent,
-                ),
-              );
-            }
+            CustomSnackBar.show(context, message: state.message, isError: true);
           }
         },
         builder: (context, state) {

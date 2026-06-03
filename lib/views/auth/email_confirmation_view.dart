@@ -7,6 +7,7 @@ import '../../config/routes.dart';
 import '../../services/auth_bloc.dart';
 import '../../services/auth_event.dart';
 import '../../services/auth_state.dart';
+import '../../components/custom_snackbar.dart';
 
 class EmailConfirmationView extends StatefulWidget {
   final String email;
@@ -41,20 +42,18 @@ class _EmailConfirmationViewState extends State<EmailConfirmationView> {
         email: widget.email,
       );
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Verification code resent successfully!'),
-            backgroundColor: Colors.green,
-          ),
+        CustomSnackBar.show(
+          context,
+          message: 'Verification code resent successfully!',
+          isError: false,
         );
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(e.toString()),
-            backgroundColor: Colors.redAccent,
-          ),
+        CustomSnackBar.show(
+          context,
+          message: e.toString(),
+          isError: true,
         );
       }
     } finally {
@@ -74,12 +73,7 @@ class _EmailConfirmationViewState extends State<EmailConfirmationView> {
           if (state is AuthAuthenticated) {
             context.go(AppRoutes.home);
           } else if (state is AuthFailure) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.message),
-                backgroundColor: Colors.redAccent,
-              ),
-            );
+            CustomSnackBar.show(context, message: state.message, isError: true);
           }
         },
         builder: (context, state) {
@@ -121,7 +115,7 @@ class _EmailConfirmationViewState extends State<EmailConfirmationView> {
                       ),
                       const SizedBox(height: 16.0),
                       Text(
-                        "We've sent a 6-digit verification code to:",
+                        "We've sent a verification code to:",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontFamily: 'Poppins',
@@ -142,23 +136,23 @@ class _EmailConfirmationViewState extends State<EmailConfirmationView> {
                       const SizedBox(height: 32.0),
                       TextFormField(
                         controller: _otpController,
-                        keyboardType: TextInputType.number,
+                        keyboardType: TextInputType.text,
                         textAlign: TextAlign.center,
-                        maxLength: 6,
+                        maxLength: 10,
                         style: TextStyle(
                           fontFamily: 'Poppins',
-                          fontSize: 24.0,
-                          letterSpacing: 8.0,
+                          fontSize: 20.0,
+                          letterSpacing: 6.0,
                           fontWeight: FontWeight.bold,
                           color: AppColors.palePurple50,
                         ),
                         decoration: InputDecoration(
                           counterText: '',
-                          hintText: '000000',
+                          hintText: 'Enter Code',
                           hintStyle: TextStyle(
                             fontFamily: 'Poppins',
-                            fontSize: 24.0,
-                            letterSpacing: 8.0,
+                            fontSize: 16.0,
+                            letterSpacing: 0.0,
                             color: AppColors.palePurple700,
                           ),
                           filled: true,
@@ -183,8 +177,9 @@ class _EmailConfirmationViewState extends State<EmailConfirmationView> {
                           ),
                         ),
                         validator: (value) {
-                          if (value == null || value.trim().length != 6) {
-                            return 'Please enter the 6-digit code';
+                          final len = value?.trim().length ?? 0;
+                          if (len < 6 || len > 10) {
+                            return 'Please enter a valid code (6-10 characters)';
                           }
                           return null;
                         },

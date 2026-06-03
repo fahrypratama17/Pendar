@@ -31,3 +31,14 @@ class AuthFailure extends AuthState {
   @override
   List<Object?> get props => [message];
 }
+
+class AuthNeedsVerification extends AuthState {
+  final String email;
+  final String message;
+
+  const AuthNeedsVerification({required this.email, required this.message});
+
+  @override
+  List<Object?> get props => [email, message];
+}
+

@@ -56,7 +56,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           .single();
       emit(AuthAuthenticated(UserModel.fromMap(userData, response.user!.email ?? '')));
     } catch (e) {
-      emit(AuthFailure(e.toString()));
+      emit(AuthFailure(_getErrorMessage(e)));
     }
   }
 
@@ -76,7 +76,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         return;
       }
       if (response.session == null) {
-        emit(const AuthFailure('Registration successful! Please confirm your email address.'));
+        emit(AuthNeedsVerification(
+          email: event.email,
+          message: 'Pendaftaran berhasil! Silakan konfirmasi email Anda.',
+        ));
         return;
       }
       final userData = await _supabaseClient
@@ -86,7 +89,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           .single();
       emit(AuthAuthenticated(UserModel.fromMap(userData, response.user!.email ?? '')));
     } catch (e) {
-      emit(AuthFailure(e.toString()));
+      emit(AuthFailure(_getErrorMessage(e)));
     }
   }
 
@@ -109,7 +112,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           .single();
       emit(AuthAuthenticated(UserModel.fromMap(userData, response.user!.email ?? '')));
     } catch (e) {
-      emit(AuthFailure(e.toString()));
+      emit(AuthFailure(_getErrorMessage(e)));
     }
   }
 
@@ -119,7 +122,25 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await _supabaseClient.auth.signOut();
       emit(AuthUnauthenticated());
     } catch (e) {
-      emit(AuthFailure(e.toString()));
+      emit(AuthFailure(_getErrorMessage(e)));
     }
+  }
+
+  String _getErrorMessage(dynamic e) {
+    if (e is AuthException) {
+      switch (e.code) {
+        case 'otp_expired':
+          return 'Kode verifikasi telah kedaluwarsa. Silakan kirim kode baru.';
+        case 'invalid_credentials':
+          return 'Email atau password salah.';
+        case 'email_not_confirmed':
+          return 'Email Anda belum dikonfirmasi. Silakan konfirmasi email Anda.';
+        case 'user_already_exists':
+          return 'Email sudah terdaftar. Silakan gunakan email lain atau masuk.';
+        default:
+          return e.message;
+      }
+    }
+    return e.toString();
   }
 }

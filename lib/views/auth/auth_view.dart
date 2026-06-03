@@ -7,6 +7,7 @@ import '../../config/routes.dart';
 import '../../services/auth_bloc.dart';
 import '../../services/auth_event.dart';
 import '../../services/auth_state.dart';
+import '../../components/custom_snackbar.dart';
 
 class AuthView extends StatefulWidget {
   const AuthView({super.key});
@@ -36,12 +37,7 @@ class _AuthViewState extends State<AuthView> {
           if (state is AuthAuthenticated) {
             context.go(AppRoutes.home);
           } else if (state is AuthFailure) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.message),
-                backgroundColor: Colors.redAccent,
-              ),
-            );
+            CustomSnackBar.show(context, message: state.message, isError: true);
           }
         },
         builder: (context, state) {
