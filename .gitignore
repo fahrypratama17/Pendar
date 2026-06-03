@@ -49,5 +49,5 @@ app.*.map.json
 *-lock.json
 
 # Agents
-.agents/
+.a*/
 
