@@ -47,7 +47,5 @@ app.*.map.json
 .*.md
 
 *-lock.json
-
-# Agents
 .a*/
 
