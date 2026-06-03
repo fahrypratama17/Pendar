@@ -215,16 +215,9 @@ class _ScheduleViewState extends State<ScheduleView> {
                       color: AppColors.secondary,
                       borderRadius: BorderRadius.circular(20.0),
                       border: Border.all(
-                        color: AppColors.purple700,
-                        width: 1.5,
+                        color: AppColors.darkPurple600,
+                        width: 1.0,
                       ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.purple700.withValues(alpha: 0.3),
-                          blurRadius: 12.0,
-                          spreadRadius: 1.0,
-                        ),
-                      ],
                     ),
                     child: Form(
                       key: _formKey,
@@ -626,19 +619,19 @@ class _ScheduleViewState extends State<ScheduleView> {
                               child: Container(
                                 margin: const EdgeInsets.only(bottom: 16.0),
                                 decoration: BoxDecoration(
-                                  color: AppColors.secondary,
+                                  gradient: const LinearGradient(
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                    colors: [
+                                      Color(0xFF2A2448),
+                                      AppColors.secondary,
+                                    ],
+                                  ),
                                   borderRadius: BorderRadius.circular(16.0),
                                   border: Border.all(
-                                    color: AppColors.purple700,
-                                    width: 1.5,
+                                    color: const Color(0xFF2E284F),
+                                    width: 1.0,
                                   ),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: AppColors.purple700.withValues(alpha: 0.3),
-                                      blurRadius: 12.0,
-                                      spreadRadius: 1.0,
-                                    ),
-                                  ],
                                 ),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(15.0),

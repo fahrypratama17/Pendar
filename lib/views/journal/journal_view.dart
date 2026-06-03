@@ -217,19 +217,19 @@ class _JournalViewState extends State<JournalView> {
                               margin: const EdgeInsets.only(bottom: 16.0),
                               padding: const EdgeInsets.all(20.0),
                               decoration: BoxDecoration(
-                                color: AppColors.secondary,
+                                gradient: const LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  colors: [
+                                    Color(0xFF2A2448),
+                                    AppColors.secondary,
+                                  ],
+                                ),
                                 borderRadius: BorderRadius.circular(16.0),
                                 border: Border.all(
-                                  color: AppColors.purple700,
-                                  width: 1.5,
+                                  color: const Color(0xFF2E284F),
+                                  width: 1.0,
                                 ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: AppColors.purple700.withValues(alpha: 0.3),
-                                    blurRadius: 12.0,
-                                    spreadRadius: 1.0,
-                                  ),
-                                ],
                               ),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -241,9 +241,9 @@ class _JournalViewState extends State<JournalView> {
                                         _formatDate(journal.createdAt),
                                         style: const TextStyle(
                                           fontFamily: 'Poppins',
-                                          fontSize: 12.0,
+                                          fontSize: 13.0,
                                           fontWeight: FontWeight.w500,
-                                          color: AppColors.purple300,
+                                          color: AppColors.palePurple400,
                                         ),
                                       ),
                                       Text(

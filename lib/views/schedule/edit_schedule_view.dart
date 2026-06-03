@@ -325,16 +325,9 @@ class _EditScheduleViewState extends State<EditScheduleView> {
                         color: AppColors.secondary,
                         borderRadius: BorderRadius.circular(20.0),
                         border: Border.all(
-                          color: AppColors.purple700,
-                          width: 1.5,
+                          color: AppColors.darkPurple600,
+                          width: 1.0,
                         ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppColors.purple700.withValues(alpha: 0.3),
-                            blurRadius: 12.0,
-                            spreadRadius: 1.0,
-                          ),
-                        ],
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -457,16 +450,9 @@ class _EditScheduleViewState extends State<EditScheduleView> {
                         color: AppColors.secondary,
                         borderRadius: BorderRadius.circular(16.0),
                         border: Border.all(
-                          color: AppColors.purple700,
-                          width: 1.5,
+                          color: AppColors.darkPurple600,
+                          width: 1.0,
                         ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppColors.purple700.withValues(alpha: 0.3),
-                            blurRadius: 12.0,
-                            spreadRadius: 1.0,
-                          ),
-                        ],
                       ),
                       child: TextFormField(
                         controller: _notesController,
