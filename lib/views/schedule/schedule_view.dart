@@ -622,7 +622,7 @@ class _ScheduleViewState extends State<ScheduleView> {
                                   color: AppColors.secondary,
                                   borderRadius: BorderRadius.circular(16.0),
                                   border: Border.all(
-                                    color: AppColors.darkPurple600,
+                                    color: const Color(0xFF2E284F),
                                     width: 1.0,
                                   ),
                                 ),
