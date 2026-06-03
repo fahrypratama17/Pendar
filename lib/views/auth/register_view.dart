@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import '../../config/themes.dart';
 import '../../config/routes.dart';
@@ -8,22 +7,26 @@ import '../../services/auth_bloc.dart';
 import '../../services/auth_event.dart';
 import '../../services/auth_state.dart';
 
-class AuthView extends StatefulWidget {
-  const AuthView({super.key});
+class RegisterView extends StatefulWidget {
+  const RegisterView({super.key});
 
   @override
-  State<AuthView> createState() => _AuthViewState();
+  State<RegisterView> createState() => _RegisterViewState();
 }
 
-class _AuthViewState extends State<AuthView> {
+class _RegisterViewState extends State<RegisterView> {
   final _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
+  final _universityController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
 
   @override
   void dispose() {
+    _nameController.dispose();
     _emailController.dispose();
+    _universityController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
@@ -39,9 +42,14 @@ class _AuthViewState extends State<AuthView> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.message),
-                backgroundColor: Colors.redAccent,
+                backgroundColor: state.message.contains('successful')
+                    ? Colors.green
+                    : Colors.redAccent,
               ),
             );
+            if (state.message.contains('successful')) {
+              context.pop();
+            }
           }
         },
         builder: (context, state) {
@@ -56,7 +64,7 @@ class _AuthViewState extends State<AuthView> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Welcome back,',
+                        'Create Account',
                         style: TextStyle(
                           fontFamily: 'Poppins',
                           fontSize: 32.0,
@@ -66,14 +74,65 @@ class _AuthViewState extends State<AuthView> {
                       ),
                       const SizedBox(height: 8.0),
                       Text(
-                        "Let's check your mind today.",
+                        'Start your mindful journey with Pendar.',
                         style: TextStyle(
                           fontFamily: 'Poppins',
                           fontSize: 16.0,
                           color: AppColors.palePurple400,
                         ),
                       ),
-                      const SizedBox(height: 48.0),
+                      const SizedBox(height: 36.0),
+                      Text(
+                        'Full Name',
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.palePurple300,
+                        ),
+                      ),
+                      const SizedBox(height: 8.0),
+                      TextFormField(
+                        controller: _nameController,
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          color: AppColors.palePurple50,
+                        ),
+                        decoration: InputDecoration(
+                          hintText: 'Sulthan Rafi',
+                          hintStyle: TextStyle(
+                            fontFamily: 'Poppins',
+                            color: AppColors.palePurple700,
+                          ),
+                          filled: true,
+                          fillColor: AppColors.secondary,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                            borderSide: BorderSide.none,
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.darkPurple600,
+                              width: 1.0,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.5,
+                            ),
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return 'Please enter your full name';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
                       Text(
                         'Email',
                         style: TextStyle(
@@ -98,16 +157,6 @@ class _AuthViewState extends State<AuthView> {
                           ),
                           filled: true,
                           fillColor: AppColors.secondary,
-                          prefixIcon: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: SvgPicture.asset(
-                              'assets/icon/Iconemail.svg',
-                              colorFilter: const ColorFilter.mode(
-                                AppColors.palePurple400,
-                                BlendMode.srcIn,
-                              ),
-                            ),
-                          ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12.0),
                             borderSide: BorderSide.none,
@@ -134,7 +183,58 @@ class _AuthViewState extends State<AuthView> {
                           return null;
                         },
                       ),
-                      const SizedBox(height: 24.0),
+                      const SizedBox(height: 20.0),
+                      Text(
+                        'University / Institution',
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.palePurple300,
+                        ),
+                      ),
+                      const SizedBox(height: 8.0),
+                      TextFormField(
+                        controller: _universityController,
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          color: AppColors.palePurple50,
+                        ),
+                        decoration: InputDecoration(
+                          hintText: 'Fakultas Ilmu Komputer',
+                          hintStyle: TextStyle(
+                            fontFamily: 'Poppins',
+                            color: AppColors.palePurple700,
+                          ),
+                          filled: true,
+                          fillColor: AppColors.secondary,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                            borderSide: BorderSide.none,
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.darkPurple600,
+                              width: 1.0,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.5,
+                            ),
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return 'Please enter your university / institution';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
                       Text(
                         'Password',
                         style: TextStyle(
@@ -153,23 +253,13 @@ class _AuthViewState extends State<AuthView> {
                           color: AppColors.palePurple50,
                         ),
                         decoration: InputDecoration(
-                          hintText: '••••••••',
+                          hintText: 'Create a strong password',
                           hintStyle: TextStyle(
                             fontFamily: 'Poppins',
                             color: AppColors.palePurple700,
                           ),
                           filled: true,
                           fillColor: AppColors.secondary,
-                          prefixIcon: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: SvgPicture.asset(
-                              'assets/icon/Iconpassword.svg',
-                              colorFilter: const ColorFilter.mode(
-                                AppColors.palePurple400,
-                                BlendMode.srcIn,
-                              ),
-                            ),
-                          ),
                           suffixIcon: IconButton(
                             icon: Icon(
                               _obscurePassword
@@ -206,26 +296,13 @@ class _AuthViewState extends State<AuthView> {
                           if (value == null || value.trim().isEmpty) {
                             return 'Please enter your password';
                           }
+                          if (value.length < 6) {
+                            return 'Password must be at least 6 characters';
+                          }
                           return null;
                         },
                       ),
-                      const SizedBox(height: 16.0),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: TextButton(
-                          onPressed: () {},
-                          child: Text(
-                            'Forgot password?',
-                            style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.w600,
-                              color: AppColors.primary,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 32.0),
+                      const SizedBox(height: 36.0),
                       SizedBox(
                         width: double.infinity,
                         height: 56.0,
@@ -235,8 +312,10 @@ class _AuthViewState extends State<AuthView> {
                               : () {
                                   if (_formKey.currentState!.validate()) {
                                     context.read<AuthBloc>().add(
-                                          AuthLoginRequested(
+                                          AuthRegisterRequested(
+                                            fullName: _nameController.text.trim(),
                                             email: _emailController.text.trim(),
+                                            university: _universityController.text.trim(),
                                             password: _passwordController.text,
                                           ),
                                         );
@@ -262,7 +341,7 @@ class _AuthViewState extends State<AuthView> {
                                   ),
                                 )
                               : Text(
-                                  'Login',
+                                  'Register',
                                   style: TextStyle(
                                     fontFamily: 'Poppins',
                                     fontSize: 16.0,
@@ -277,7 +356,7 @@ class _AuthViewState extends State<AuthView> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "Don't have an account? ",
+                            "Already have an account? ",
                             style: TextStyle(
                               fontFamily: 'Poppins',
                               fontSize: 14.0,
@@ -286,10 +365,10 @@ class _AuthViewState extends State<AuthView> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              context.push(AppRoutes.register);
+                              context.pop();
                             },
                             child: Text(
-                              'Sign up',
+                              'Log in',
                               style: TextStyle(
                                 fontFamily: 'Poppins',
                                 fontSize: 14.0,
