@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 import 'auth_event.dart';
@@ -14,6 +15,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthVerifyOtpRequested>(_onVerifyOtpRequested);
     on<AuthLogoutRequested>(_onLogoutRequested);
     on<AuthProfileUpdated>(_onProfileUpdated);
+    on<AuthAvatarUpdated>(_onAvatarUpdated);
   }
 
   Future<void> _onAppStarted(AuthAppStarted event, Emitter<AuthState> emit) async {
@@ -155,6 +157,48 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     }
   }
+
+  Future<void> _onAvatarUpdated(AuthAvatarUpdated event, Emitter<AuthState> emit) async {
+    final currentState = state;
+    if (currentState is AuthAuthenticated) {
+      emit(AuthLoading());
+      try {
+        final user = _supabaseClient.auth.currentUser;
+        if (user == null) {
+          emit(AuthUnauthenticated());
+          return;
+        }
+        final file = File(event.localFilePath);
+        final extension = event.localFilePath.split('.').last;
+        final fileName = '${user.id}/avatar_${DateTime.now().millisecondsSinceEpoch}.$extension';
+        await _supabaseClient.storage.from('avatars').upload(
+              fileName,
+              file,
+              fileOptions: const FileOptions(
+                cacheControl: '3600',
+                upsert: true,
+              ),
+            );
+        final publicUrl = _supabaseClient.storage.from('avatars').getPublicUrl(fileName);
+        await _supabaseClient
+            .from('users')
+            .update({'avatar_url': publicUrl})
+            .eq('id', user.id);
+        final updatedUser = UserModel(
+          id: user.id,
+          fullName: currentState.user.fullName,
+          email: user.email ?? '',
+          university: currentState.user.university,
+          avatarUrl: publicUrl,
+          );
+        emit(AuthAuthenticated(updatedUser));
+      } catch (e) {
+        emit(AuthFailure(_getErrorMessage(e)));
+        emit(currentState);
+      }
+    }
+  }
+
 
   String _getErrorMessage(dynamic e) {
     if (e is AuthException) {

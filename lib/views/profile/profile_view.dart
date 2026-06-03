@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../config/themes.dart';
 import '../../services/auth_bloc.dart';
 import '../../services/auth_event.dart';
@@ -21,6 +22,34 @@ class _ProfileViewState extends State<ProfileView> {
   final _universityController = TextEditingController();
   bool _remindersEnabled = true;
   bool _isSaving = false;
+
+  Future<void> _pickAvatar() async {
+    try {
+      final ImagePicker picker = ImagePicker();
+      final XFile? image = await picker.pickImage(
+        source: ImageSource.gallery,
+        maxWidth: 512,
+        maxHeight: 512,
+        imageQuality: 85,
+      );
+      if (image != null && mounted) {
+        setState(() {
+          _isSaving = true;
+        });
+        context.read<AuthBloc>().add(
+              AuthAvatarUpdated(localFilePath: image.path),
+            );
+      }
+    } catch (e) {
+      if (mounted) {
+        CustomSnackBar.show(
+          context,
+          message: 'Gagal memilih gambar: $e',
+          isError: true,
+        );
+      }
+    }
+  }
 
   @override
   void initState() {
@@ -69,9 +98,13 @@ class _ProfileViewState extends State<ProfileView> {
         builder: (context, state) {
           String fullName = '';
           String email = '';
+          ImageProvider avatarImage = const AssetImage('assets/images/profile_avatar.png');
           if (state is AuthAuthenticated) {
             fullName = state.user.fullName;
             email = state.user.email;
+            if (state.user.avatarUrl != null && state.user.avatarUrl!.isNotEmpty) {
+              avatarImage = NetworkImage(state.user.avatarUrl!);
+            }
           }
           return SafeArea(
             child: SingleChildScrollView(
@@ -120,42 +153,45 @@ class _ProfileViewState extends State<ProfileView> {
                       ],
                     ),
                     const SizedBox(height: 24.0),
-                    Stack(
-                      alignment: Alignment.bottomRight,
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: AppColors.primary.withValues(alpha: 0.3),
-                              width: 3.0,
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: AppColors.primary.withValues(alpha: 0.15),
-                                blurRadius: 20.0,
-                                spreadRadius: 4.0,
+                    GestureDetector(
+                      onTap: _pickAvatar,
+                      child: Stack(
+                        alignment: Alignment.bottomRight,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: AppColors.primary.withValues(alpha: 0.3),
+                                width: 3.0,
                               ),
-                            ],
+                              boxShadow: [
+                                BoxShadow(
+                                  color: AppColors.primary.withValues(alpha: 0.15),
+                                  blurRadius: 20.0,
+                                  spreadRadius: 4.0,
+                                ),
+                              ],
+                            ),
+                            child: CircleAvatar(
+                              radius: 56.0,
+                              backgroundImage: avatarImage,
+                            ),
                           ),
-                          child: const CircleAvatar(
-                            radius: 56.0,
-                            backgroundImage: AssetImage('assets/images/profile_avatar.png'),
+                          Container(
+                            padding: const EdgeInsets.all(6.0),
+                            decoration: const BoxDecoration(
+                              color: AppColors.tertiary,
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(
+                              Icons.edit_outlined,
+                              color: AppColors.neutral900,
+                              size: 18.0,
+                            ),
                           ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.all(6.0),
-                          decoration: const BoxDecoration(
-                            color: AppColors.tertiary,
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(
-                            Icons.edit_outlined,
-                            color: AppColors.neutral900,
-                            size: 18.0,
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                     const SizedBox(height: 16.0),
                     Text(

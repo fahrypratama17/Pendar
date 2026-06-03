@@ -67,3 +67,12 @@ class AuthProfileUpdated extends AuthEvent {
   List<Object?> get props => [fullName, university];
 }
 
+class AuthAvatarUpdated extends AuthEvent {
+  final String localFilePath;
+
+  const AuthAvatarUpdated({required this.localFilePath});
+
+  @override
+  List<Object?> get props => [localFilePath];
+}
+
