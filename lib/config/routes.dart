@@ -3,7 +3,7 @@ import '../views/onboarding/onboarding_view.dart';
 import '../views/auth/auth_view.dart';
 import '../views/auth/register_view.dart';
 import '../views/auth/email_confirmation_view.dart';
-import '../views/home/home_view.dart';
+import '../views/home/main_layout_view.dart';
 
 class AppRoutes {
   AppRoutes._();
@@ -38,7 +38,7 @@ class AppRoutes {
       ),
       GoRoute(
         path: home,
-        builder: (context, state) => const HomeView(),
+        builder: (context, state) => const MainLayoutView(),
       ),
     ],
   );

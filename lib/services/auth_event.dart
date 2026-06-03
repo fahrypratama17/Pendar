@@ -53,3 +53,17 @@ class AuthVerifyOtpRequested extends AuthEvent {
 }
 
 class AuthLogoutRequested extends AuthEvent {}
+
+class AuthProfileUpdated extends AuthEvent {
+  final String fullName;
+  final String university;
+
+  const AuthProfileUpdated({
+    required this.fullName,
+    required this.university,
+  });
+
+  @override
+  List<Object?> get props => [fullName, university];
+}
+
