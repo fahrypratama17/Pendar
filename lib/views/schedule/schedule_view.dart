@@ -631,7 +631,7 @@ class _ScheduleViewState extends State<ScheduleView> {
                                       children: [
                                         Container(
                                           width: 4.0,
-                                          color: AppColors.primary,
+                                          color: AppColors.purple100,
                                         ),
                                         Expanded(
                                           child: Padding(
@@ -655,12 +655,12 @@ class _ScheduleViewState extends State<ScheduleView> {
                                                       shape: BoxShape.circle,
                                                       border: Border.all(
                                                         color: schedule.isCompleted
-                                                            ? AppColors.primary
+                                                            ? AppColors.purple100
                                                             : AppColors.palePurple400,
                                                         width: 2.0,
                                                       ),
                                                       color: schedule.isCompleted
-                                                          ? AppColors.primary
+                                                          ? AppColors.purple100
                                                           : Colors.transparent,
                                                     ),
                                                     child: schedule.isCompleted
