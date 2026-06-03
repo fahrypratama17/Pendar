@@ -215,14 +215,21 @@ class _JournalViewState extends State<JournalView> {
                             },
                             child: Container(
                               margin: const EdgeInsets.only(bottom: 16.0),
-                              padding: const EdgeInsets.all(24.0),
+                              padding: const EdgeInsets.all(20.0),
                               decoration: BoxDecoration(
                                 color: AppColors.secondary,
                                 borderRadius: BorderRadius.circular(16.0),
                                 border: Border.all(
-                                  color: const Color(0xFF2E284F),
-                                  width: 1.0,
+                                  color: AppColors.purple700,
+                                  width: 1.5,
                                 ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: AppColors.purple700.withValues(alpha: 0.3),
+                                    blurRadius: 12.0,
+                                    spreadRadius: 1.0,
+                                  ),
+                                ],
                               ),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -234,9 +241,9 @@ class _JournalViewState extends State<JournalView> {
                                         _formatDate(journal.createdAt),
                                         style: const TextStyle(
                                           fontFamily: 'Poppins',
-                                          fontSize: 13.0,
+                                          fontSize: 12.0,
                                           fontWeight: FontWeight.w500,
-                                          color: AppColors.palePurple400,
+                                          color: AppColors.purple300,
                                         ),
                                       ),
                                       Text(
@@ -290,10 +297,10 @@ class _JournalViewState extends State<JournalView> {
         onPressed: () {
           context.push(AppRoutes.newJournal);
         },
-        backgroundColor: AppColors.tertiary,
-        foregroundColor: AppColors.neutral900,
+        backgroundColor: AppColors.primary,
+        foregroundColor: Colors.white,
         shape: const CircleBorder(),
-        elevation: 4.0,
+        elevation: 6.0,
         child: const Icon(
           Icons.add,
           size: 28.0,
