@@ -39,16 +39,15 @@ class _RegisterViewState extends State<RegisterView> {
           if (state is AuthAuthenticated) {
             context.go(AppRoutes.home);
           } else if (state is AuthFailure) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.message),
-                backgroundColor: state.message.contains('successful')
-                    ? Colors.green
-                    : Colors.redAccent,
-              ),
-            );
-            if (state.message.contains('successful')) {
-              context.pop();
+            if (state.message.contains('successful') || state.message.contains('confirm')) {
+              context.go('${AppRoutes.confirmEmail}?email=${_emailController.text.trim()}');
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.message),
+                  backgroundColor: Colors.redAccent,
+                ),
+              );
             }
           }
         },
