@@ -307,7 +307,7 @@ class _ScheduleViewState extends State<ScheduleView> {
                                       decoration: InputDecoration(
                                         filled: true,
                                         fillColor: AppColors.neutral.withValues(alpha: 0.3),
-                                        contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                                        contentPadding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
                                         enabledBorder: OutlineInputBorder(
                                           borderRadius: BorderRadius.circular(16.0),
                                           borderSide: const BorderSide(color: AppColors.darkPurple400),
@@ -320,15 +320,15 @@ class _ScheduleViewState extends State<ScheduleView> {
                                       items: const [
                                         DropdownMenuItem(
                                           value: 'high',
-                                          child: Text('High Priority'),
+                                          child: Text('High'),
                                         ),
                                         DropdownMenuItem(
                                           value: 'medium',
-                                          child: Text('Medium Priority'),
+                                          child: Text('Medium'),
                                         ),
                                         DropdownMenuItem(
                                           value: 'low',
-                                          child: Text('Low Priority'),
+                                          child: Text('Low'),
                                         ),
                                       ],
                                       onChanged: (val) {
@@ -612,7 +612,6 @@ class _ScheduleViewState extends State<ScheduleView> {
                               },
                               child: Container(
                                 margin: const EdgeInsets.only(bottom: 16.0),
-                                padding: const EdgeInsets.all(16.0),
                                 decoration: BoxDecoration(
                                   color: AppColors.secondary,
                                   borderRadius: BorderRadius.circular(16.0),
@@ -621,135 +620,170 @@ class _ScheduleViewState extends State<ScheduleView> {
                                     width: 1.0,
                                   ),
                                 ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(15.0),
+                                  child: IntrinsicHeight(
+                                    child: Row(
+                                      crossAxisAlignment: CrossAxisAlignment.stretch,
                                       children: [
-                                        GestureDetector(
-                                          onTap: () {
-                                            context.read<ScheduleBloc>().add(
-                                                  ScheduleToggleCompleteRequested(
-                                                    id: schedule.id,
-                                                    isCompleted: !schedule.isCompleted,
-                                                  ),
-                                                );
-                                          },
-                                          child: Icon(
-                                            schedule.isCompleted
-                                                ? Icons.check_circle
-                                                : Icons.radio_button_off,
-                                            color: schedule.isCompleted
-                                                ? AppColors.primary
-                                                : AppColors.palePurple400,
-                                            size: 24.0,
-                                          ),
-                                        ),
-                                        const SizedBox(width: 12.0),
-                                        Expanded(
-                                          child: Text(
-                                            schedule.taskName,
-                                            style: TextStyle(
-                                              fontFamily: 'Poppins',
-                                              fontSize: 16.0,
-                                              fontWeight: FontWeight.bold,
-                                              color: schedule.isCompleted
-                                                  ? AppColors.palePurple300.withValues(alpha: 0.5)
-                                                  : AppColors.palePurple50,
-                                              decoration: schedule.isCompleted
-                                                  ? TextDecoration.lineThrough
-                                                  : null,
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(width: 8.0),
                                         Container(
-                                          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
-                                          decoration: BoxDecoration(
-                                            color: _getPriorityColor(schedule.priority),
-                                            borderRadius: BorderRadius.circular(12.0),
-                                          ),
-                                          child: Text(
-                                            schedule.priority.toUpperCase(),
-                                            style: const TextStyle(
-                                              fontFamily: 'Poppins',
-                                              fontSize: 10.0,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
+                                          width: 4.0,
+                                          color: AppColors.primary,
+                                        ),
+                                        Expanded(
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(16.0),
+                                            child: Row(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    context.read<ScheduleBloc>().add(
+                                                          ScheduleToggleCompleteRequested(
+                                                            id: schedule.id,
+                                                            isCompleted: !schedule.isCompleted,
+                                                          ),
+                                                        );
+                                                  },
+                                                  child: Container(
+                                                    width: 22.0,
+                                                    height: 22.0,
+                                                    decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      border: Border.all(
+                                                        color: schedule.isCompleted
+                                                            ? AppColors.primary
+                                                            : AppColors.palePurple400,
+                                                        width: 2.0,
+                                                      ),
+                                                      color: schedule.isCompleted
+                                                          ? AppColors.primary
+                                                          : Colors.transparent,
+                                                    ),
+                                                    child: schedule.isCompleted
+                                                        ? const Icon(
+                                                            Icons.check,
+                                                            color: AppColors.neutral900,
+                                                            size: 14.0,
+                                                          )
+                                                        : null,
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 16.0),
+                                                Expanded(
+                                                  child: Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Row(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        children: [
+                                                          Expanded(
+                                                            child: Text(
+                                                              schedule.taskName,
+                                                              style: TextStyle(
+                                                                fontFamily: 'Poppins',
+                                                                fontSize: 16.0,
+                                                                fontWeight: FontWeight.bold,
+                                                                color: schedule.isCompleted
+                                                                    ? AppColors.palePurple300.withValues(alpha: 0.5)
+                                                                    : AppColors.palePurple50,
+                                                                decoration: schedule.isCompleted
+                                                                    ? TextDecoration.lineThrough
+                                                                    : null,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          const SizedBox(width: 8.0),
+                                                          Container(
+                                                            padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
+                                                            decoration: BoxDecoration(
+                                                              color: _getPriorityColor(schedule.priority),
+                                                              borderRadius: BorderRadius.circular(12.0),
+                                                            ),
+                                                            child: Text(
+                                                              schedule.priority[0].toUpperCase() +
+                                                                  schedule.priority.substring(1).toLowerCase(),
+                                                              style: const TextStyle(
+                                                                fontFamily: 'Poppins',
+                                                                fontSize: 10.0,
+                                                                fontWeight: FontWeight.bold,
+                                                                color: Colors.white,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      if (schedule.notes.isNotEmpty) ...[
+                                                        const SizedBox(height: 8.0),
+                                                        Text(
+                                                          schedule.notes,
+                                                          maxLines: 2,
+                                                          overflow: TextOverflow.ellipsis,
+                                                          style: TextStyle(
+                                                            fontFamily: 'Poppins',
+                                                            fontSize: 13.0,
+                                                            color: schedule.isCompleted
+                                                                ? AppColors.palePurple900.withValues(alpha: 0.5)
+                                                                : AppColors.palePurple400,
+                                                            decoration: schedule.isCompleted
+                                                                ? TextDecoration.lineThrough
+                                                                : null,
+                                                            height: 1.4,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                      const SizedBox(height: 12.0),
+                                                      Row(
+                                                        children: [
+                                                          Icon(
+                                                            Icons.access_time_outlined,
+                                                            size: 14.0,
+                                                            color: schedule.isCompleted
+                                                                ? AppColors.palePurple900.withValues(alpha: 0.5)
+                                                                : AppColors.palePurple400,
+                                                          ),
+                                                          const SizedBox(width: 4.0),
+                                                          Text(
+                                                            _formatTime(schedule.deadline),
+                                                            style: TextStyle(
+                                                              fontFamily: 'Poppins',
+                                                              fontSize: 11.0,
+                                                              color: schedule.isCompleted
+                                                                  ? AppColors.palePurple900.withValues(alpha: 0.5)
+                                                                  : AppColors.palePurple400,
+                                                            ),
+                                                          ),
+                                                          const SizedBox(width: 16.0),
+                                                          Icon(
+                                                            Icons.calendar_today_outlined,
+                                                            size: 14.0,
+                                                            color: schedule.isCompleted
+                                                                ? AppColors.palePurple900.withValues(alpha: 0.5)
+                                                                : AppColors.palePurple400,
+                                                          ),
+                                                          const SizedBox(width: 4.0),
+                                                          Text(
+                                                            _formatDate(schedule.deadline),
+                                                            style: TextStyle(
+                                                              fontFamily: 'Poppins',
+                                                              fontSize: 11.0,
+                                                              color: schedule.isCompleted
+                                                                  ? AppColors.palePurple900.withValues(alpha: 0.5)
+                                                                  : AppColors.palePurple400,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
                                         ),
                                       ],
                                     ),
-                                    if (schedule.notes.isNotEmpty) ...[
-                                      const SizedBox(height: 8.0),
-                                      Padding(
-                                        padding: const EdgeInsets.only(left: 36.0),
-                                        child: Text(
-                                          schedule.notes,
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            fontFamily: 'Poppins',
-                                            fontSize: 13.0,
-                                            color: schedule.isCompleted
-                                                ? AppColors.palePurple900.withValues(alpha: 0.5)
-                                                : AppColors.palePurple400,
-                                            decoration: schedule.isCompleted
-                                                ? TextDecoration.lineThrough
-                                                : null,
-                                            height: 1.4,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                    const SizedBox(height: 12.0),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 36.0),
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            Icons.access_time_outlined,
-                                            size: 14.0,
-                                            color: schedule.isCompleted
-                                                ? AppColors.palePurple900.withValues(alpha: 0.5)
-                                                : AppColors.palePurple400,
-                                          ),
-                                          const SizedBox(width: 4.0),
-                                          Text(
-                                            _formatTime(schedule.deadline),
-                                            style: TextStyle(
-                                              fontFamily: 'Poppins',
-                                              fontSize: 11.0,
-                                              color: schedule.isCompleted
-                                                  ? AppColors.palePurple900.withValues(alpha: 0.5)
-                                                  : AppColors.palePurple400,
-                                            ),
-                                          ),
-                                          const SizedBox(width: 16.0),
-                                          Icon(
-                                            Icons.calendar_today_outlined,
-                                            size: 14.0,
-                                            color: schedule.isCompleted
-                                                ? AppColors.palePurple900.withValues(alpha: 0.5)
-                                                : AppColors.palePurple400,
-                                          ),
-                                          const SizedBox(width: 4.0),
-                                          Text(
-                                            _formatDate(schedule.deadline),
-                                            style: TextStyle(
-                                              fontFamily: 'Poppins',
-                                              fontSize: 11.0,
-                                              color: schedule.isCompleted
-                                                  ? AppColors.palePurple900.withValues(alpha: 0.5)
-                                                  : AppColors.palePurple400,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
+                                  ),
                                 ),
                               ),
                             );
