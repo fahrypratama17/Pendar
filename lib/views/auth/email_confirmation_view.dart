@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 import 'package:go_router/go_router.dart';
 import '../../config/themes.dart';
 import '../../config/routes.dart';
+import '../../services/auth_bloc.dart';
+import '../../services/auth_event.dart';
+import '../../services/auth_state.dart';
 
 class EmailConfirmationView extends StatefulWidget {
   final String email;
@@ -17,11 +21,19 @@ class EmailConfirmationView extends StatefulWidget {
 }
 
 class _EmailConfirmationViewState extends State<EmailConfirmationView> {
-  bool _isLoading = false;
+  final _otpController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  bool _isResending = false;
+
+  @override
+  void dispose() {
+    _otpController.dispose();
+    super.dispose();
+  }
 
   Future<void> _resendEmail() async {
     setState(() {
-      _isLoading = true;
+      _isResending = true;
     });
     try {
       await Supabase.instance.client.auth.resend(
@@ -31,7 +43,7 @@ class _EmailConfirmationViewState extends State<EmailConfirmationView> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Verification link resent successfully!'),
+            content: Text('Verification code resent successfully!'),
             backgroundColor: Colors.green,
           ),
         );
@@ -48,7 +60,7 @@ class _EmailConfirmationViewState extends State<EmailConfirmationView> {
     } finally {
       if (mounted) {
         setState(() {
-          _isLoading = false;
+          _isResending = false;
         });
       }
     }
@@ -57,135 +69,229 @@ class _EmailConfirmationViewState extends State<EmailConfirmationView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const Spacer(),
-              Container(
-                padding: const EdgeInsets.all(24.0),
-                decoration: BoxDecoration(
-                  color: AppColors.secondary,
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: AppColors.primary.withValues(alpha: 0.2),
-                    width: 2.0,
-                  ),
-                ),
-                child: Icon(
-                  Icons.mark_email_read_outlined,
-                  size: 80.0,
-                  color: AppColors.primary,
-                ),
+      body: BlocConsumer<AuthBloc, AuthState>(
+        listener: (context, state) {
+          if (state is AuthAuthenticated) {
+            context.go(AppRoutes.home);
+          } else if (state is AuthFailure) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.message),
+                backgroundColor: Colors.redAccent,
               ),
-              const SizedBox(height: 40.0),
-              Text(
-                'Confirm your email',
-                style: TextStyle(
-                  fontFamily: 'Poppins',
-                  fontSize: 28.0,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.palePurple50,
-                ),
-              ),
-              const SizedBox(height: 16.0),
-              Text(
-                "We've sent a verification link to:",
-                style: TextStyle(
-                  fontFamily: 'Poppins',
-                  fontSize: 14.0,
-                  color: AppColors.palePurple400,
-                ),
-              ),
-              const SizedBox(height: 8.0),
-              Text(
-                widget.email,
-                style: TextStyle(
-                  fontFamily: 'Poppins',
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.primary,
-                ),
-              ),
-              const SizedBox(height: 16.0),
-              Text(
-                'Please check your inbox and click the link to activate your account.',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontFamily: 'Poppins',
-                  fontSize: 14.0,
-                  color: AppColors.palePurple400,
-                  height: 1.5,
-                ),
-              ),
-              const Spacer(),
-              SizedBox(
-                width: double.infinity,
-                height: 56.0,
-                child: ElevatedButton(
-                  onPressed: _isLoading ? null : _resendEmail,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    foregroundColor: AppColors.neutral900,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(28.0),
-                    ),
-                    elevation: 0,
-                  ),
-                  child: _isLoading
-                      ? const SizedBox(
-                          height: 24.0,
-                          width: 24.0,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2.0,
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              AppColors.neutral900,
-                            ),
-                          ),
-                        )
-                      : Text(
-                          'Resend Verification Email',
-                          style: TextStyle(
-                            fontFamily: 'Poppins',
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.neutral900,
+            );
+          }
+        },
+        builder: (context, state) {
+          return SafeArea(
+            child: Center(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(24.0),
+                        decoration: BoxDecoration(
+                          color: AppColors.secondary,
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: AppColors.primary.withValues(alpha: 0.2),
+                            width: 2.0,
                           ),
                         ),
+                        child: Icon(
+                          Icons.mark_email_read_outlined,
+                          size: 80.0,
+                          color: AppColors.primary,
+                        ),
+                      ),
+                      const SizedBox(height: 40.0),
+                      Text(
+                        'Confirm your email',
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 28.0,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.palePurple50,
+                        ),
+                      ),
+                      const SizedBox(height: 16.0),
+                      Text(
+                        "We've sent a 6-digit verification code to:",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 14.0,
+                          color: AppColors.palePurple400,
+                        ),
+                      ),
+                      const SizedBox(height: 8.0),
+                      Text(
+                        widget.email,
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primary,
+                        ),
+                      ),
+                      const SizedBox(height: 32.0),
+                      TextFormField(
+                        controller: _otpController,
+                        keyboardType: TextInputType.number,
+                        textAlign: TextAlign.center,
+                        maxLength: 6,
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 24.0,
+                          letterSpacing: 8.0,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.palePurple50,
+                        ),
+                        decoration: InputDecoration(
+                          counterText: '',
+                          hintText: '000000',
+                          hintStyle: TextStyle(
+                            fontFamily: 'Poppins',
+                            fontSize: 24.0,
+                            letterSpacing: 8.0,
+                            color: AppColors.palePurple700,
+                          ),
+                          filled: true,
+                          fillColor: AppColors.secondary,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                            borderSide: BorderSide.none,
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.darkPurple600,
+                              width: 1.0,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.5,
+                            ),
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.trim().length != 6) {
+                            return 'Please enter the 6-digit code';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 32.0),
+                      SizedBox(
+                        width: double.infinity,
+                        height: 56.0,
+                        child: ElevatedButton(
+                          onPressed: state is AuthLoading
+                              ? null
+                              : () {
+                                  if (_formKey.currentState!.validate()) {
+                                    context.read<AuthBloc>().add(
+                                          AuthVerifyOtpRequested(
+                                            email: widget.email,
+                                            token: _otpController.text.trim(),
+                                          ),
+                                        );
+                                  }
+                                },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primary,
+                            foregroundColor: AppColors.neutral900,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(28.0),
+                            ),
+                            elevation: 0,
+                          ),
+                          child: state is AuthLoading
+                              ? const SizedBox(
+                                  height: 24.0,
+                                  width: 24.0,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2.0,
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                      AppColors.neutral900,
+                                    ),
+                                  ),
+                                )
+                              : Text(
+                                  'Verify Code',
+                                  style: TextStyle(
+                                    fontFamily: 'Poppins',
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.neutral900,
+                                  ),
+                                ),
+                        ),
+                      ),
+                      const SizedBox(height: 16.0),
+                      SizedBox(
+                        width: double.infinity,
+                        height: 56.0,
+                        child: OutlinedButton(
+                          onPressed: _isResending ? null : _resendEmail,
+                          style: OutlinedButton.styleFrom(
+                            side: const BorderSide(color: AppColors.darkPurple600),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(28.0),
+                            ),
+                          ),
+                          child: _isResending
+                              ? const SizedBox(
+                                  height: 24.0,
+                                  width: 24.0,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2.0,
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                      AppColors.palePurple50,
+                                    ),
+                                  ),
+                                )
+                              : Text(
+                                  'Resend Code',
+                                  style: TextStyle(
+                                    fontFamily: 'Poppins',
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.palePurple300,
+                                  ),
+                                ),
+                        ),
+                      ),
+                      const SizedBox(height: 16.0),
+                      TextButton(
+                        onPressed: () {
+                          context.go(AppRoutes.auth);
+                        },
+                        child: Text(
+                          'Back to Login',
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.primary,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              const SizedBox(height: 16.0),
-              SizedBox(
-                width: double.infinity,
-                height: 56.0,
-                child: OutlinedButton(
-                  onPressed: () {
-                    context.go(AppRoutes.auth);
-                  },
-                  style: OutlinedButton.styleFrom(
-                    side: const BorderSide(color: AppColors.darkPurple400),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(28.0),
-                    ),
-                  ),
-                  child: Text(
-                    'Back to Login',
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.palePurple300,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 48.0),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }

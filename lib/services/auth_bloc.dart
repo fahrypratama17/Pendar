@@ -11,6 +11,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthAppStarted>(_onAppStarted);
     on<AuthLoginRequested>(_onLoginRequested);
     on<AuthRegisterRequested>(_onRegisterRequested);
+    on<AuthVerifyOtpRequested>(_onVerifyOtpRequested);
     on<AuthLogoutRequested>(_onLogoutRequested);
   }
 
@@ -76,6 +77,29 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
       if (response.session == null) {
         emit(const AuthFailure('Registration successful! Please confirm your email address.'));
+        return;
+      }
+      final userData = await _supabaseClient
+          .from('users')
+          .select()
+          .eq('id', response.user!.id)
+          .single();
+      emit(AuthAuthenticated(UserModel.fromMap(userData, response.user!.email ?? '')));
+    } catch (e) {
+      emit(AuthFailure(e.toString()));
+    }
+  }
+
+  Future<void> _onVerifyOtpRequested(AuthVerifyOtpRequested event, Emitter<AuthState> emit) async {
+    emit(AuthLoading());
+    try {
+      final response = await _supabaseClient.auth.verifyOTP(
+        email: event.email,
+        token: event.token,
+        type: OtpType.signup,
+      );
+      if (response.user == null) {
+        emit(const AuthFailure('Verification failed: User not found'));
         return;
       }
       final userData = await _supabaseClient
