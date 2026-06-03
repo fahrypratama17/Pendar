@@ -28,6 +28,7 @@ class PendarApp extends StatelessWidget {
       ],
       child: MaterialApp.router(
         title: 'Pendar',
+        debugShowCheckedModeBanner: false,
         themeMode: ThemeMode.dark,
         darkTheme: AppTheme.darkTheme,
         routerConfig: AppRoutes.router,

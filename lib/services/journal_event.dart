@@ -49,3 +49,20 @@ class JournalDeleteRequested extends JournalEvent {
   @override
   List<Object?> get props => [id];
 }
+
+class JournalAutoSaveRequested extends JournalEvent {
+  final String? id;
+  final String title;
+  final String content;
+  final int mood;
+
+  const JournalAutoSaveRequested({
+    this.id,
+    required this.title,
+    required this.content,
+    required this.mood,
+  });
+
+  @override
+  List<Object?> get props => [id, title, content, mood];
+}

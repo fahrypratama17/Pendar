@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -25,6 +26,8 @@ class _EditJournalViewState extends State<EditJournalView> {
   late int _selectedMood;
   bool _isSaving = false;
   bool _isDeleting = false;
+  String _saveStatus = '';
+  Timer? _debounceTimer;
 
   final List<String> _moodEmojis = const ['😞', '🙁', '😐', '🙂', '😄'];
 
@@ -34,13 +37,45 @@ class _EditJournalViewState extends State<EditJournalView> {
     _titleController = TextEditingController(text: widget.journal.title);
     _contentController = TextEditingController(text: widget.journal.content);
     _selectedMood = widget.journal.mood;
+    _titleController.addListener(_onInputChanged);
+    _contentController.addListener(_onInputChanged);
   }
 
   @override
   void dispose() {
+    _debounceTimer?.cancel();
     _titleController.dispose();
     _contentController.dispose();
     super.dispose();
+  }
+
+  void _onInputChanged() {
+    setState(() {
+      _saveStatus = 'Saving...';
+    });
+    _debounceTimer?.cancel();
+    _debounceTimer = Timer(const Duration(milliseconds: 1500), () {
+      _triggerAutoSave();
+    });
+  }
+
+  void _triggerAutoSave() {
+    final title = _titleController.text.trim();
+    final content = _contentController.text.trim();
+    if (title.isEmpty && content.isEmpty) {
+      setState(() {
+        _saveStatus = '';
+      });
+      return;
+    }
+    context.read<JournalBloc>().add(
+          JournalAutoSaveRequested(
+            id: widget.journal.id,
+            title: title.isEmpty ? 'Untitled' : title,
+            content: content,
+            mood: _selectedMood,
+          ),
+        );
   }
 
   void _showDeleteConfirmation() {
@@ -120,13 +155,27 @@ class _EditJournalViewState extends State<EditJournalView> {
             context.pop();
           },
         ),
-        title: const Text(
-          'Edit Journal',
-          style: TextStyle(
-            fontFamily: 'Poppins',
-            fontWeight: FontWeight.bold,
-            color: AppColors.palePurple50,
-          ),
+        title: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(
+              'Edit Journal',
+              style: TextStyle(
+                fontFamily: 'Poppins',
+                fontWeight: FontWeight.bold,
+                color: AppColors.palePurple50,
+              ),
+            ),
+            if (_saveStatus.isNotEmpty)
+              Text(
+                _saveStatus,
+                style: const TextStyle(
+                  fontFamily: 'Poppins',
+                  fontSize: 10.0,
+                  color: AppColors.palePurple400,
+                ),
+              ),
+          ],
         ),
         centerTitle: true,
         actions: [
@@ -157,6 +206,10 @@ class _EditJournalViewState extends State<EditJournalView> {
                   message: state.message,
                   isError: true,
                 );
+              } else if (state is JournalAutoSaveSuccess) {
+                setState(() {
+                  _saveStatus = 'Saved to cloud';
+                });
               }
             },
             builder: (context, state) {
@@ -165,6 +218,7 @@ class _EditJournalViewState extends State<EditJournalView> {
                     ? null
                     : () {
                         if (_formKey.currentState!.validate()) {
+                          _debounceTimer?.cancel();
                           setState(() {
                             _isSaving = true;
                           });
@@ -220,6 +274,7 @@ class _EditJournalViewState extends State<EditJournalView> {
                               setState(() {
                                 _selectedMood = index + 1;
                               });
+                              _onInputChanged();
                             },
                             child: Container(
                               width: 52.0,

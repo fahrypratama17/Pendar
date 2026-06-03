@@ -91,6 +91,10 @@ class _JournalViewState extends State<JournalView> {
             ),
             Expanded(
               child: BlocBuilder<JournalBloc, JournalState>(
+                buildWhen: (previous, current) =>
+                    current is JournalLoadSuccess ||
+                    current is JournalLoading ||
+                    current is JournalFailure,
                 builder: (context, state) {
                   if (state is JournalLoading) {
                     return const Center(

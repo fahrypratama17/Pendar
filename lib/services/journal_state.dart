@@ -31,3 +31,12 @@ class JournalFailure extends JournalState {
   @override
   List<Object?> get props => [message];
 }
+
+class JournalAutoSaveSuccess extends JournalState {
+  final String id;
+
+  const JournalAutoSaveSuccess(this.id);
+
+  @override
+  List<Object?> get props => [id];
+}
