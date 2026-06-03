@@ -822,7 +822,6 @@ class _ScheduleViewState extends State<ScheduleView> {
         ),
         ),
       ),
-      ),
     );
   }
 }
