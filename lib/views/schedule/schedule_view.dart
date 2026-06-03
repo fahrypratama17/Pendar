@@ -167,14 +167,10 @@ class _ScheduleViewState extends State<ScheduleView> {
                    Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      SvgPicture.asset(
-                        'assets/icon/Iconstress.svg',
-                        colorFilter: const ColorFilter.mode(
-                          AppColors.primary,
-                          BlendMode.srcIn,
-                        ),
-                        width: 24.0,
-                        height: 28.0,
+                      Image.asset(
+                        'assets/icon/pendaricon.png',
+                        width: 32.0,
+                        height: 32.0,
                       ),
                       const Text(
                         'Pendar',
