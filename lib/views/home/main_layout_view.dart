@@ -90,7 +90,13 @@ class _MainLayoutViewState extends State<MainLayoutView> {
         body: SafeArea(
           child: Column(
             children: [
-              const AppHeader(),
+              AppHeader(
+                onProfileTap: () {
+                  setState(() {
+                    _currentIndex = 4;
+                  });
+                },
+              ),
               Expanded(
                 child: IndexedStack(
                   index: _currentIndex,

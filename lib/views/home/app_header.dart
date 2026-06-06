@@ -3,7 +3,12 @@ import '../../config/themes.dart';
 import '../profile/profile_view.dart';
 
 class AppHeader extends StatelessWidget {
-  const AppHeader({super.key});
+  final VoidCallback? onProfileTap;
+
+  const AppHeader({
+    super.key,
+    this.onProfileTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,14 +36,7 @@ class AppHeader extends StatelessWidget {
                       height: 32,
                     ),
                     IconButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const ProfileView(),
-                          ),
-                        );
-                      },
+                      onPressed: onProfileTap,
                       icon: const Icon(
                         Icons.person_outline,
                         color: AppColors.palePurple50,
