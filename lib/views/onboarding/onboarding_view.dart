@@ -25,10 +25,40 @@ class OnboardingView extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         const Spacer(),
-                        Icon(
-                          Icons.spa_outlined,
-                          size: 100.0,
-                          color: AppColors.primary,
+                        Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Container(
+                              width: 360,
+                              height: 360,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                gradient: RadialGradient(
+                                  colors: [
+                                    const Color(0xFFD0A9FF),
+                                    const Color(0xFFD0A9FF).withOpacity(0),
+                                  ],
+                                ),
+                              ),
+                            ),
+
+                            Container(
+                              decoration: BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.20),
+                                    blurRadius: 40,
+                                    spreadRadius: 2,
+                                  ),
+                                ],
+                              ),
+                              child: Image.asset(
+                                'assets/icon/pendaricon.png',
+                                width: 200,
+                                height: 200,
+                              ),
+                            ),
+                          ],
                         ),
                         const SizedBox(height: 32.0),
                         Text(
@@ -42,12 +72,13 @@ class OnboardingView extends StatelessWidget {
                         ),
                         const SizedBox(height: 16.0),
                         Text(
-                          'Detect and manage burnout effectively to live a more mindful and balanced life.',
+                          'Redup sejenak, berpendar lebih lama.',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontFamily: 'Poppins',
                             fontSize: 16.0,
-                            color: AppColors.palePurple400,
+                            color: AppColors.muted,
+                            fontStyle: FontStyle.italic,
                           ),
                         ),
                         const Spacer(),
@@ -67,7 +98,7 @@ class OnboardingView extends StatelessWidget {
                               elevation: 0,
                             ),
                             child: Text(
-                              'Get Started',
+                              'Mari Berpendar',
                               style: TextStyle(
                                 fontFamily: 'Poppins',
                                 fontSize: 16.0,

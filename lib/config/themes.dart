@@ -4,10 +4,11 @@ import 'package:google_fonts/google_fonts.dart';
 class AppColors {
   AppColors._();
 
-  static const Color primary = Color(0xFF9D5CFF);
+  static const Color primary = Color(0xFC9D5CFF);
   static const Color secondary = Color(0xFF1E1B33);
   static const Color tertiary = Color(0xFFD1C4E9);
   static const Color neutral = Color(0xFF0D0B14);
+  static const Color muted = Color(0xFF968DA0);
 
   static const Color purple50 = Color(0xFFF5EFFF);
   static const Color purple100 = Color(0xFFE1CCFF);
