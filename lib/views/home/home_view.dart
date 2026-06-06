@@ -61,38 +61,81 @@ class HomeView extends StatelessWidget {
                               fontStyle: FontStyle.italic,
                             ),
                           ),
-                          const Spacer(),
+                          const SizedBox(height: 30.0),
                           Center(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  Icons.spa_outlined,
-                                  size: 80.0,
-                                  color: AppColors.primary.withValues(alpha: 0.3),
+                            child: Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                image: const DecorationImage(
+                                  image: AssetImage('assets/images/mindimages.png'),
+                                  fit: BoxFit.cover,
                                 ),
-                                const SizedBox(height: 16.0),
-                                const Text(
-                                  'Welcome to Pendar Dashboard',
-                                  style: TextStyle(
-                                    fontFamily: 'Poppins',
-                                    fontSize: 18.0,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.palePurple50,
-                                  ),
+                              ),
+                              child: Container(
+                                padding: const EdgeInsets.all(20),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: Colors.black.withOpacity(0.4),
                                 ),
-                                const SizedBox(height: 8.0),
-                                const Text(
-                                  'Start your mindfulness journey today.',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontFamily: 'Poppins',
-                                    fontSize: 14.0,
-                                    color: AppColors.palePurple400,
-                                  ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Check Your Mind',
+                                      style: TextStyle(
+                                        color: AppColors.palePurple50,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+
+                                    const SizedBox(height: 8),
+
+                                    FractionallySizedBox(
+                                      widthFactor: 0.7,
+                                      alignment: Alignment.centerLeft,
+                                      child: const Text(
+                                        'Measure your daily burnout level to maintain your mental harmony',
+                                        style: TextStyle(
+                                          color: AppColors.palePurple50,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                    ),
+
+                                    const SizedBox(height: 20),
+
+                                    SizedBox(
+                                      width: 200,
+                                      height: 56.0,
+                                      child: ElevatedButton(
+                                        onPressed: () {
+
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: AppColors.purple100,
+                                          foregroundColor: Colors.white,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(28.0),
+                                          ),
+                                          elevation: 0,
+                                        ),
+                                        child: Text(
+                                          'Start Daily Check-In',
+                                          style: TextStyle(
+                                            fontFamily: 'Poppins',
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.bold,
+                                            color: AppColors.purple900,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
+                              ),
+                            )
                           ),
                           const Spacer(),
                         ],

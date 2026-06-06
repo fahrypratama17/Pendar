@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../config/themes.dart';
-import '../profile/profile_view.dart';
 
 class AppHeader extends StatelessWidget {
   final VoidCallback? onProfileTap;
