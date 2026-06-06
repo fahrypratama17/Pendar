@@ -3,20 +3,22 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../config/themes.dart';
 import '../../services/auth_bloc.dart';
 import '../../services/auth_state.dart';
+import '../../utils/greeting_utils.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final greeting = GreetingUtils.getGreeting();
+
     return Scaffold(
       body: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
+
           String userName = 'User';
-          String userUniv = 'Institution';
           if (state is AuthAuthenticated) {
             userName = state.user.fullName;
-            userUniv = state.user.university;
           }
           return SafeArea(
             child: LayoutBuilder(
@@ -34,7 +36,7 @@ class HomeView extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Hello,',
+                              '$greeting,',
                               style: TextStyle(
                                 fontFamily: 'Poppins',
                                 fontSize: 16.0,
@@ -45,17 +47,19 @@ class HomeView extends StatelessWidget {
                               userName,
                               style: const TextStyle(
                                 fontFamily: 'Poppins',
-                                fontSize: 28.0,
+                                fontSize: 20.0,
                                 fontWeight: FontWeight.bold,
                                 color: AppColors.palePurple50,
                               ),
                             ),
+                            const SizedBox(height: 20.0),
                             Text(
-                              userUniv,
+                              '"The soul always knows what to do to heal itself. The challenge is to silence the mind."',
                               style: const TextStyle(
                                 fontFamily: 'Poppins',
                                 fontSize: 14.0,
-                                color: AppColors.primary,
+                                color: AppColors.muted,
+                                fontStyle: FontStyle.italic,
                               ),
                             ),
                             const Spacer(),
