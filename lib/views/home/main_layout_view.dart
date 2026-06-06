@@ -7,6 +7,7 @@ import '../../config/routes.dart';
 import '../../services/auth_bloc.dart';
 import '../../services/auth_state.dart';
 import 'home_view.dart';
+import 'app_header.dart';
 import '../journal/journal_view.dart';
 import '../checkin/checkin_view.dart';
 import '../schedule/schedule_view.dart';
@@ -86,9 +87,24 @@ class _MainLayoutViewState extends State<MainLayoutView> {
         }
       },
       child: Scaffold(
-        body: IndexedStack(
-          index: _currentIndex,
-          children: _pages,
+        body: SafeArea(
+          child: Column(
+            children: [
+              AppHeader(
+                onProfileTap: () {
+                  setState(() {
+                    _currentIndex = 4;
+                  });
+                },
+              ),
+              Expanded(
+                child: IndexedStack(
+                  index: _currentIndex,
+                  children: _pages,
+                ),
+              ),
+            ],
+          ),
         ),
         bottomNavigationBar: Container(
           height: 76.0 + MediaQuery.of(context).padding.bottom,
