@@ -60,49 +60,7 @@ class _JournalViewState extends State<JournalView> {
         child: SafeArea(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Image.asset(
-                    'assets/icon/pendaricon.png',
-                    width: 32.0,
-                    height: 32.0,
-                  ),
-                  const Text(
-                    'Pendar',
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.palePurple50,
-                    ),
-                  ),
-                  Container(
-                    width: 40.0,
-                    height: 40.0,
-                    decoration: BoxDecoration(
-                      color: AppColors.secondary,
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: AppColors.darkPurple600,
-                        width: 1.0,
-                      ),
-                    ),
-                    child: IconButton(
-                      padding: EdgeInsets.zero,
-                      icon: const Icon(
-                        Icons.person_outline,
-                        color: AppColors.palePurple400,
-                        size: 20.0,
-                      ),
-                      onPressed: () {},
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            const SizedBox(height: 24),
             Expanded(
               child: BlocBuilder<JournalBloc, JournalState>(
                 buildWhen: (previous, current) =>

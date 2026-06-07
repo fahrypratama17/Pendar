@@ -114,44 +114,6 @@ class _ProfileViewState extends State<ProfileView> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(8.0),
-                          decoration: BoxDecoration(
-                            color: AppColors.secondary,
-                            shape: BoxShape.circle,
-                          ),
-                          child: SvgPicture.asset(
-                            'assets/icon/Iconmind.svg',
-                            colorFilter: const ColorFilter.mode(
-                              AppColors.primary,
-                              BlendMode.srcIn,
-                            ),
-                            width: 24.0,
-                            height: 24.0,
-                          ),
-                        ),
-                        const Text(
-                          'Pendar',
-                          style: TextStyle(
-                            fontFamily: 'Poppins',
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.palePurple50,
-                          ),
-                        ),
-                        IconButton(
-                          icon: const Icon(
-                            Icons.account_circle_outlined,
-                            color: AppColors.palePurple400,
-                            size: 28.0,
-                          ),
-                          onPressed: () {},
-                        ),
-                      ],
-                    ),
                     const SizedBox(height: 24.0),
                     GestureDetector(
                       onTap: _pickAvatar,
