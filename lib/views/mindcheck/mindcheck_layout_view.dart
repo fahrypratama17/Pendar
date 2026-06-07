@@ -2,47 +2,61 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import '../../config/themes.dart';
+
 import '../../config/routes.dart';
+import '../../config/themes.dart';
 import '../../services/auth_bloc.dart';
 import '../../services/auth_state.dart';
-import 'home_view.dart';
-import 'app_header_view.dart';
-import '../journal/journal_view.dart';
-import '../mindcheck/mindcheck_view.dart';
-import '../schedule/schedule_view.dart';
-import '../profile/profile_view.dart';
+import '../home/app_header_view.dart';
+import 'mindcheck_step1_view.dart';
+import 'mindcheck_step2_view.dart';
+import 'mindcheck_step3_view.dart';
+import 'mindcheck_step4_view.dart';
+import 'mindcheck_step5_view.dart';
 
-class MainLayoutView extends StatefulWidget {
-  const MainLayoutView({super.key});
+class MindCheckLayoutView extends StatefulWidget {
+  const MindCheckLayoutView({super.key});
 
   @override
-  State<MainLayoutView> createState() => _MainLayoutViewState();
+  State<MindCheckLayoutView> createState() => _MindCheckLayoutViewState();
 }
 
-class _MainLayoutViewState extends State<MainLayoutView> {
-  int _currentIndex = 0;
+class _MindCheckLayoutViewState extends State<MindCheckLayoutView> {
+  int _currentStep = 0;
 
-  final List<Widget> _pages = const [
-    HomeView(),
-    JournalView(),
-    CheckInView(),
-    ScheduleView(),
-    ProfileView(),
-  ];
+  void _goToStep(int step) {
+    setState(() {
+      _currentStep = step;
+    });
+  }
+
+  List<Widget> _buildPages() {
+    return [
+      MindCheckStep1View(onNext: () => _goToStep(1)),
+      MindCheckStep2View(onNext: () => _goToStep(2)),
+      MindCheckStep3View(onNext: () => _goToStep(3)),
+      MindCheckStep4View(onNext: () => _goToStep(4)),
+      MindCheckStep5View(
+        onComplete: () => context.go(AppRoutes.home),
+      ),
+    ];
+  }
 
   Widget _buildNavBarItem({
     required int index,
     required String iconPath,
     required String label,
   }) {
-    final bool isActive = _currentIndex == index;
+    final bool isActive = index == 2;
+
     return Expanded(
       child: GestureDetector(
         onTap: () {
-          setState(() {
-            _currentIndex = index;
-          });
+          if (index == 2) {
+            _goToStep(0);
+            return;
+          }
+          context.go(AppRoutes.home);
         },
         behavior: HitTestBehavior.opaque,
         child: Column(
@@ -78,8 +92,58 @@ class _MainLayoutViewState extends State<MainLayoutView> {
     );
   }
 
+  Widget _buildProgressHeader() {
+    final double progress = (_currentStep + 1) / 5;
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'STEP ${_currentStep + 1} OF 5',
+                style: const TextStyle(
+                  fontFamily: 'Poppins',
+                  fontSize: 11,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.palePurple400,
+                  letterSpacing: 0.6,
+                ),
+              ),
+              Text(
+                '${(progress * 100).round()}%',
+                style: const TextStyle(
+                  fontFamily: 'Poppins',
+                  fontSize: 11,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.purple100,
+                  letterSpacing: 0.4,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(999),
+            child: LinearProgressIndicator(
+              value: progress,
+              minHeight: 6,
+              backgroundColor: Colors.white.withValues(alpha: 0.08),
+              valueColor: const AlwaysStoppedAnimation<Color>(AppColors.purple100),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final pages = _buildPages();
+
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthUnauthenticated) {
@@ -92,15 +156,14 @@ class _MainLayoutViewState extends State<MainLayoutView> {
             children: [
               AppHeader(
                 onProfileTap: () {
-                  setState(() {
-                    _currentIndex = 4;
-                  });
+                  context.go(AppRoutes.home);
                 },
               ),
+              _buildProgressHeader(),
               Expanded(
                 child: IndexedStack(
-                  index: _currentIndex,
-                  children: _pages,
+                  index: _currentStep,
+                  children: pages,
                 ),
               ),
             ],
@@ -163,3 +226,5 @@ class _MainLayoutViewState extends State<MainLayoutView> {
     );
   }
 }
+
+
