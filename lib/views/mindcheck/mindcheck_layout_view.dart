@@ -7,7 +7,7 @@ import '../../config/routes.dart';
 import '../../config/themes.dart';
 import '../../services/auth_bloc.dart';
 import '../../services/auth_state.dart';
-import '../home/app_header.dart';
+import '../home/app_header_view.dart';
 import 'mindcheck_step1_view.dart';
 import 'mindcheck_step2_view.dart';
 import 'mindcheck_step3_view.dart';

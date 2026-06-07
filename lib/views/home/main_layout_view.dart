@@ -7,9 +7,9 @@ import '../../config/routes.dart';
 import '../../services/auth_bloc.dart';
 import '../../services/auth_state.dart';
 import 'home_view.dart';
-import 'app_header.dart';
+import 'app_header_view.dart';
 import '../journal/journal_view.dart';
-import '../checkin/checkin_view.dart';
+import '../mindcheck/mindcheck_view.dart';
 import '../schedule/schedule_view.dart';
 import '../profile/profile_view.dart';
 
