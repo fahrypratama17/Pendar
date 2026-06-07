@@ -14,14 +14,25 @@ import '../schedule/schedule_view.dart';
 import '../profile/profile_view.dart';
 
 class MainLayoutView extends StatefulWidget {
-  const MainLayoutView({super.key});
+  final int initialIndex;
+
+  const MainLayoutView({
+    super.key,
+    this.initialIndex = 0,
+  });
 
   @override
   State<MainLayoutView> createState() => _MainLayoutViewState();
 }
 
 class _MainLayoutViewState extends State<MainLayoutView> {
-  int _currentIndex = 0;
+  late int _currentIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentIndex = widget.initialIndex;
+  }
 
   final List<Widget> _pages = const [
     HomeView(),
@@ -98,9 +109,21 @@ class _MainLayoutViewState extends State<MainLayoutView> {
                 },
               ),
               Expanded(
-                child: IndexedStack(
-                  index: _currentIndex,
-                  children: _pages,
+                child: Container(
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        AppColors.darkPurple900,
+                        AppColors.purple900,
+                      ],
+                    ),
+                  ),
+                  child: IndexedStack(
+                    index: _currentIndex,
+                    children: _pages,
+                  ),
                 ),
               ),
             ],

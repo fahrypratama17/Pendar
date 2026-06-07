@@ -49,60 +49,18 @@ class _JournalViewState extends State<JournalView> {
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
             colors: [
-              AppColors.purple100.withValues(alpha: 0.08),
-              AppColors.neutral,
+              AppColors.darkPurple900,
+              AppColors.purple900,
             ],
           ),
         ),
         child: SafeArea(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Image.asset(
-                    'assets/icon/pendaricon.png',
-                    width: 32.0,
-                    height: 32.0,
-                  ),
-                  const Text(
-                    'Pendar',
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.palePurple50,
-                    ),
-                  ),
-                  Container(
-                    width: 40.0,
-                    height: 40.0,
-                    decoration: BoxDecoration(
-                      color: AppColors.secondary,
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: AppColors.darkPurple600,
-                        width: 1.0,
-                      ),
-                    ),
-                    child: IconButton(
-                      padding: EdgeInsets.zero,
-                      icon: const Icon(
-                        Icons.person_outline,
-                        color: AppColors.palePurple400,
-                        size: 20.0,
-                      ),
-                      onPressed: () {},
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            const SizedBox(height: 24),
             Expanded(
               child: BlocBuilder<JournalBloc, JournalState>(
                 buildWhen: (previous, current) =>
@@ -228,8 +186,8 @@ class _JournalViewState extends State<JournalView> {
                                 color: AppColors.secondary,
                                 borderRadius: BorderRadius.circular(16.0),
                                 border: Border.all(
-                                  color: const Color(0xFF2E284F),
-                                  width: 1.0,
+                                  color: AppColors.palePurple400.withValues(alpha: 0.2),
+                                  width: 1,
                                 ),
                               ),
                               child: Column(
