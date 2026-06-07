@@ -13,6 +13,7 @@ import 'mindcheck_step2_view.dart';
 import 'mindcheck_step3_view.dart';
 import 'mindcheck_step4_view.dart';
 import 'mindcheck_step5_view.dart';
+import 'mind_check_result_view.dart';
 
 class MindCheckLayoutView extends StatefulWidget {
   const MindCheckLayoutView({super.key});
@@ -36,8 +37,8 @@ class _MindCheckLayoutViewState extends State<MindCheckLayoutView> {
       MindCheckStep2View(onNext: () => _goToStep(2)),
       MindCheckStep3View(onNext: () => _goToStep(3)),
       MindCheckStep4View(onNext: () => _goToStep(4)),
-      MindCheckStep5View(
-        onComplete: () => context.go(AppRoutes.home),
+      MindCheckStep5View(onComplete: () => _goToStep(5),),
+      MindCheckResultView(onFinish: () => context.go(AppRoutes.home),
       ),
     ];
   }
@@ -93,7 +94,7 @@ class _MindCheckLayoutViewState extends State<MindCheckLayoutView> {
   }
 
   Widget _buildProgressHeader() {
-    final double progress = (_currentStep + 1) / 5;
+    final double progress = (_currentStep >= 5) ? 1.0 : (_currentStep + 1) / 5;
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
@@ -159,7 +160,9 @@ class _MindCheckLayoutViewState extends State<MindCheckLayoutView> {
                   context.go(AppRoutes.home);
                 },
               ),
-              _buildProgressHeader(),
+              _currentStep < 5
+                  ? _buildProgressHeader()
+                  : const SizedBox.shrink(),
               Expanded(
                 child: IndexedStack(
                   index: _currentStep,
