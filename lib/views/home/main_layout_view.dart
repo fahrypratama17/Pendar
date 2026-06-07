@@ -109,9 +109,21 @@ class _MainLayoutViewState extends State<MainLayoutView> {
                 },
               ),
               Expanded(
-                child: IndexedStack(
-                  index: _currentIndex,
-                  children: _pages,
+                child: Container(
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        AppColors.darkPurple900,
+                        AppColors.purple900,
+                      ],
+                    ),
+                  ),
+                  child: IndexedStack(
+                    index: _currentIndex,
+                    children: _pages,
+                  ),
                 ),
               ),
             ],

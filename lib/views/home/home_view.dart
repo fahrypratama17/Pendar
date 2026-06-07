@@ -78,6 +78,10 @@ class HomeView extends StatelessWidget {
                               child: Container(
                                 padding: const EdgeInsets.all(20),
                                 decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: AppColors.palePurple400.withValues(alpha: 0.2),
+                                    width: 1,
+                                  ),
                                   borderRadius: BorderRadius.circular(20),
                                   color: Colors.black.withValues(alpha: 0.4),
                                 ),
@@ -155,6 +159,10 @@ class HomeView extends StatelessWidget {
                             child: Container(
                               width: double.infinity,
                               decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: AppColors.palePurple400.withValues(alpha: 0.2),
+                                  width: 1,
+                                ),
                                 borderRadius: BorderRadius.circular(20),
                                 image: const DecorationImage(
                                   image: AssetImage('assets/images/moodimages.png'),
@@ -239,6 +247,10 @@ class HomeView extends StatelessWidget {
                             child: Container(
                               width: double.infinity,
                               decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: AppColors.palePurple400.withValues(alpha: 0.2),
+                                  width: 1,
+                                ),
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: Container(
@@ -310,6 +322,10 @@ class HomeView extends StatelessWidget {
                             child: Container(
                               width: double.infinity,
                               decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: AppColors.palePurple400.withValues(alpha: 0.2),
+                                  width: 1,
+                                ),
                                 borderRadius: BorderRadius.circular(20),
                               ),
                                 child: Container(
@@ -392,6 +408,10 @@ class HomeView extends StatelessWidget {
                             child: Container(
                                 width: double.infinity,
                                 decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: AppColors.palePurple400.withValues(alpha: 0.2),
+                                    width: 1,
+                                  ),
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                                 child: Container(
