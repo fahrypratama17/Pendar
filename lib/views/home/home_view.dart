@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import '../../config/themes.dart';
+import '../../config/routes.dart';
 import '../../services/auth_bloc.dart';
 import '../../services/auth_state.dart';
 import '../../utils/greeting_utils.dart';
@@ -77,7 +79,7 @@ class HomeView extends StatelessWidget {
                                 padding: const EdgeInsets.all(20),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20),
-                                  color: Colors.black.withOpacity(0.4),
+                                  color: Colors.black.withValues(alpha: 0.4),
                                 ),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -111,9 +113,7 @@ class HomeView extends StatelessWidget {
                                       width: 200,
                                       height: 56.0,
                                       child: ElevatedButton(
-                                        onPressed: () {
-
-                                        },
+                                        onPressed: () => context.go(AppRoutes.mindcheck),
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: AppColors.purple100,
                                           foregroundColor: Colors.white,
@@ -165,7 +165,7 @@ class HomeView extends StatelessWidget {
                                 padding: const EdgeInsets.all(20),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20),
-                                  color: Colors.black.withOpacity(0.4),
+                                  color: Colors.black.withValues(alpha: 0.4),
                                 ),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -265,7 +265,7 @@ class HomeView extends StatelessWidget {
                                         ),
 
                                         SvgPicture.asset(
-                                          'assets/icon/Icontree.svg',
+                                          'assets/icon/Iconjournal.svg',
                                           width: 18,
                                           height: 18,
                                         ),
@@ -328,7 +328,7 @@ class HomeView extends StatelessWidget {
                                         height: 40,
                                         decoration: BoxDecoration(
                                           shape: BoxShape.circle,
-                                          color: Colors.white.withOpacity(0.08),
+                                          color: Colors.white.withValues(alpha: 0.08),
                                         ),
                                         child: Center(
                                           child: SvgPicture.asset(
@@ -410,7 +410,7 @@ class HomeView extends StatelessWidget {
                                         height: 40,
                                         decoration: BoxDecoration(
                                           shape: BoxShape.circle,
-                                          color: Colors.white.withOpacity(0.08),
+                                          color: Colors.white.withValues(alpha: 0.08),
                                         ),
                                         child: Center(
                                           child: SvgPicture.asset(
