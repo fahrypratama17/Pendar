@@ -257,7 +257,7 @@ class HomeView extends StatelessWidget {
                                 padding: const EdgeInsets.all(20),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20),
-                                  color: const Color(0xFF36145E),
+                                  color: AppColors.secondary.withValues(alpha: 0.5),
                                 ),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -335,7 +335,7 @@ class HomeView extends StatelessWidget {
                                   ),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
-                                    color: const Color(0xFF36145E),
+                                    color: AppColors.secondary.withValues(alpha: 0.5),
                                   ),
                                   child: Row(
                                     children: [
@@ -421,7 +421,7 @@ class HomeView extends StatelessWidget {
                                   ),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
-                                    color: const Color(0xFF36145E),
+                                    color: AppColors.secondary.withValues(alpha: 0.5),
                                   ),
                                   child: Row(
                                     children: [

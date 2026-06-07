@@ -49,11 +49,11 @@ class _JournalViewState extends State<JournalView> {
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
             colors: [
-              AppColors.purple100.withValues(alpha: 0.08),
-              AppColors.neutral,
+              AppColors.darkPurple900,
+              AppColors.purple900,
             ],
           ),
         ),
@@ -186,8 +186,8 @@ class _JournalViewState extends State<JournalView> {
                                 color: AppColors.secondary,
                                 borderRadius: BorderRadius.circular(16.0),
                                 border: Border.all(
-                                  color: const Color(0xFF2E284F),
-                                  width: 1.0,
+                                  color: AppColors.palePurple400.withValues(alpha: 0.2),
+                                  width: 1,
                                 ),
                               ),
                               child: Column(
