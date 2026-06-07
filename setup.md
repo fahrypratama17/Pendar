@@ -31,8 +31,9 @@ Karena Flask backend Sulthan yang ngurusin prediksi ML dan nyimpen data ke Supab
    Buat file bernama `.env` di root folder `pendar-backend`, lalu isi pake kredensial Supabase berikut:
    ```env
    SUPABASE_URL=https://qeipqnzsqefebevgucgb.supabase.co
-   SUPABASE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFlaXBxbnpzcWVmZWJldmd1Y2diIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MDQ2NzE3NSwiZXhwIjoyMDk2MDQzMTc1fQ.3rakObE-Tg_4SeuGyTK1pOWYQYlja_SaU0LePy1fPxs
+   SUPABASE_KEY=MASUKKAN_SERVICE_ROLE_KEY_SUPABASE_KALIAN
    ```
+   *(Catatan: Jangan share `SUPABASE_KEY` (service_role) ke public repository karena key ini punya akses admin/bypass RLS. Ambil key-nya dari Dashboard Supabase di menu **Settings** -> **API** -> bagian **service_role**).*
 4. **Jalankan Server**:
    ```bash
    python app.py
