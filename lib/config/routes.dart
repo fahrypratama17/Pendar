@@ -5,6 +5,7 @@ import '../views/auth/register_view.dart';
 import '../views/auth/email_confirmation_view.dart';
 import '../views/home/main_layout_view.dart';
 import '../views/mindcheck/mindcheck_layout_view.dart';
+import '../views/mindcheck/mind_intervention_complete_view.dart';
 import '../views/journal/new_journal_view.dart';
 import '../views/journal/edit_journal_view.dart';
 import '../views/schedule/edit_schedule_view.dart';
@@ -20,6 +21,8 @@ class AppRoutes {
   static const String confirmEmail = '/confirm-email';
   static const String home = '/home';
   static const String mindcheck = '/mindcheck';
+  static const String journal = '/journal';
+  static const String interventionComplete = '/intervention-complete';
   static const String newJournal = '/new-journal';
   static const String editJournal = '/edit-journal';
   static const String editSchedule = '/edit-schedule';
@@ -53,6 +56,17 @@ class AppRoutes {
       GoRoute(
         path: mindcheck,
         builder: (context, state) => const MindCheckLayoutView(),
+      ),
+      GoRoute(
+        path: journal,
+        builder: (context, state) => const MainLayoutView(
+          initialIndex: 1,
+        ),
+      ),
+      GoRoute(
+        path: interventionComplete,
+        builder: (context, state) =>
+        const InterventionCompleteView(),
       ),
       GoRoute(
         path: newJournal,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../config/themes.dart';
+import '../../config/routes.dart';
+import 'package:go_router/go_router.dart';
 
 class MindExerciseView extends StatelessWidget {
   const MindExerciseView({super.key});
@@ -172,10 +174,7 @@ class MindExerciseView extends StatelessWidget {
                 height: 56,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.popUntil(
-                      context,
-                          (route) => route.isFirst,
-                    );
+                    context.push(AppRoutes.interventionComplete);
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.purple100,
