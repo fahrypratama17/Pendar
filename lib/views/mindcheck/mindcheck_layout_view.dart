@@ -7,13 +7,14 @@ import '../../config/routes.dart';
 import '../../config/themes.dart';
 import '../../services/auth_bloc.dart';
 import '../../services/auth_state.dart';
+import '../../services/mindcheck_cubit.dart';
+import '../../services/mindcheck_state.dart';
 import '../home/app_header_view.dart';
 import 'mindcheck_step1_view.dart';
 import 'mindcheck_step2_view.dart';
 import 'mindcheck_step3_view.dart';
 import 'mindcheck_step4_view.dart';
 import 'mindcheck_step5_view.dart';
-import 'mind_check_result_view.dart';
 
 class MindCheckLayoutView extends StatefulWidget {
   const MindCheckLayoutView({super.key});
@@ -37,8 +38,8 @@ class _MindCheckLayoutViewState extends State<MindCheckLayoutView> {
       MindCheckStep2View(onNext: () => _goToStep(2)),
       MindCheckStep3View(onNext: () => _goToStep(3)),
       MindCheckStep4View(onNext: () => _goToStep(4)),
-      MindCheckStep5View(onComplete: () => _goToStep(5),),
-      MindCheckResultView(onFinish: () => context.go(AppRoutes.home),
+      MindCheckStep5View(
+        onComplete: () {}, // Handled by BlocListener
       ),
     ];
   }
@@ -94,7 +95,7 @@ class _MindCheckLayoutViewState extends State<MindCheckLayoutView> {
   }
 
   Widget _buildProgressHeader() {
-    final double progress = (_currentStep >= 5) ? 1.0 : (_currentStep + 1) / 5;
+    final double progress = (_currentStep + 1) / 5;
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
@@ -145,33 +146,56 @@ class _MindCheckLayoutViewState extends State<MindCheckLayoutView> {
   Widget build(BuildContext context) {
     final pages = _buildPages();
 
-    return BlocListener<AuthBloc, AuthState>(
-      listener: (context, state) {
-        if (state is AuthUnauthenticated) {
-          context.go(AppRoutes.auth);
-        }
-      },
-      child: Scaffold(
-        body: SafeArea(
-          child: Column(
-            children: [
-              AppHeader(
-                onProfileTap: () {
-                  context.go(AppRoutes.home);
+    return BlocProvider<MindCheckCubit>(
+      create: (context) => MindCheckCubit(),
+      child: Builder(
+        builder: (context) {
+          return MultiBlocListener(
+            listeners: [
+              BlocListener<MindCheckCubit, MindCheckState>(
+                listener: (context, state) {
+                  if (state.status == MindCheckStatus.success && state.result != null) {
+                    context.go(AppRoutes.mindcheckResult, extra: state.result);
+                  } else if (state.status == MindCheckStatus.error) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          state.errorMessage ?? 'Gagal memproses hasil analisis.',
+                          style: const TextStyle(fontFamily: 'Poppins'),
+                        ),
+                        backgroundColor: Colors.redAccent,
+                      ),
+                    );
+                  }
                 },
               ),
-              _currentStep < 5
-                  ? _buildProgressHeader()
-                  : const SizedBox.shrink(),
-              Expanded(
-                child: IndexedStack(
-                  index: _currentStep,
-                  children: pages,
-                ),
+              BlocListener<AuthBloc, AuthState>(
+                listener: (context, state) {
+                  if (state is AuthUnauthenticated) {
+                    context.go(AppRoutes.auth);
+                  }
+                },
               ),
             ],
-          ),
-        ),
+            child: Scaffold(
+              body: SafeArea(
+                child: Column(
+                  children: [
+                    AppHeader(
+                      onProfileTap: () {
+                        context.go(AppRoutes.home);
+                      },
+                    ),
+                    _buildProgressHeader(),
+                    Expanded(
+                      child: IndexedStack(
+                        index: _currentStep,
+                        children: pages,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
         bottomNavigationBar: Container(
           height: 76.0 + MediaQuery.of(context).padding.bottom,
           decoration: BoxDecoration(
@@ -227,6 +251,9 @@ class _MindCheckLayoutViewState extends State<MindCheckLayoutView> {
         ),
       ),
     );
+  },
+),
+);
   }
 }
 
