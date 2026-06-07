@@ -5,11 +5,16 @@ import '../views/auth/register_view.dart';
 import '../views/auth/email_confirmation_view.dart';
 import '../views/home/main_layout_view.dart';
 import '../views/mindcheck/mindcheck_layout_view.dart';
+import '../views/mindcheck/mindcheck_result_view.dart';
+import '../views/mindcheck/intervention_breathing_view.dart';
+import '../views/mindcheck/intervention_squat_view.dart';
+import '../views/mindcheck/intervention_complete_view.dart';
 import '../views/journal/new_journal_view.dart';
 import '../views/journal/edit_journal_view.dart';
 import '../views/schedule/edit_schedule_view.dart';
 import '../models/journal_model.dart';
 import '../models/schedule_model.dart';
+import '../models/mindcheck_result_model.dart';
 
 class AppRoutes {
   AppRoutes._();
@@ -20,6 +25,10 @@ class AppRoutes {
   static const String confirmEmail = '/confirm-email';
   static const String home = '/home';
   static const String mindcheck = '/mindcheck';
+  static const String mindcheckResult = '/mindcheck-result';
+  static const String interventionBreathing = '/intervention-breathing';
+  static const String interventionSquat = '/intervention-squat';
+  static const String interventionComplete = '/intervention-complete';
   static const String newJournal = '/new-journal';
   static const String editJournal = '/edit-journal';
   static const String editSchedule = '/edit-schedule';
@@ -53,6 +62,25 @@ class AppRoutes {
       GoRoute(
         path: mindcheck,
         builder: (context, state) => const MindCheckLayoutView(),
+      ),
+      GoRoute(
+        path: mindcheckResult,
+        builder: (context, state) {
+          final result = state.extra as MindCheckResultModel;
+          return MindCheckResultView(result: result);
+        },
+      ),
+      GoRoute(
+        path: interventionBreathing,
+        builder: (context, state) => const InterventionBreathingView(),
+      ),
+      GoRoute(
+        path: interventionSquat,
+        builder: (context, state) => const InterventionSquatView(),
+      ),
+      GoRoute(
+        path: interventionComplete,
+        builder: (context, state) => const InterventionCompleteView(),
       ),
       GoRoute(
         path: newJournal,
