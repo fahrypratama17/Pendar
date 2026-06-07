@@ -68,21 +68,24 @@ Sekarang kalian perlu nge-pull branch terbaru dan nyambungin Flutter ke IP lapto
 
 ---
 
-## 3. Uji Coba Menggunakan HP Fisik
+## 3. Cara Build APK & Test di HP Fisik (Tanpa Kabel / USB Debugging)
 
-1. **Hubungkan ke Wi-Fi yang Sama**:
-   Pastikan HP fisik kalian terhubung ke **jaringan Wi-Fi yang sama** dengan laptop yang nge-run Flask backend.
-2. **Aktifkan USB Debugging**:
-   Colok HP ke laptop lewat kabel USB, lalu pastikan fitur *Developer Options* dan *USB Debugging* di HP sudah aktif.
-3. **Mulai Testing**:
-   *   **Untuk Debug/Run Langsung**:
-       ```bash
-       flutter run --release
-       ```
-   *   **Untuk Build APK**:
-       ```bash
-       flutter build apk --release
-       ```
-       Kalian bisa ambil file APK-nya di `build/app/outputs/flutter-apk/app-release.apk` dan install manual di HP.
-4. **Tes Alur Mind Check**:
-   Masuk ke menu **Check-in** di aplikasi -> Isi semua step -> Tekan **Analyze Result**. Aplikasi bakal ngirim data ke laptop kalian, ngitung prediksi ML, nyimpen hasilnya ke database Supabase, dan tampilin skor fokus & burnout real-time di HP.
+Setelah konfigurasi IP selesai, kalian bisa build aplikasinya jadi file APK, lalu install dan pakai di HP biasa secara mandiri tanpa perlu dicolok kabel atau pakai USB Debugging.
+
+### Langkah-langkah:
+1. **Build APK Release**:
+   Jalankan perintah ini di terminal proyek Flutter:
+   ```bash
+   flutter build apk --release
+   ```
+2. **Kirim & Install APK ke HP**:
+   * Ambil file APK yang sudah jadi di folder: `build/app/outputs/flutter-apk/app-release.apk`.
+   * Kirim file APK tersebut ke HP kalian (bisa lewat WhatsApp, Google Drive, ShareIt, atau copy via kabel data).
+   * Buka file APK di HP dan lakukan install.
+3. **Hubungkan ke Wi-Fi yang Sama**:
+   * Pastikan HP kalian terhubung ke **jaringan Wi-Fi yang sama** dengan laptop yang menjalankan backend Flask.
+4. **PENTING: Cek Firewall Laptop**:
+   Biar HP kalian bisa ngakses Flask server di laptop, pastikan Firewall Windows/Mac tidak memblokir koneksi masuk ke port `5000`.
+   * **Tips Cepat (Windows)**: Jika koneksi gagal, coba ganti profil network Wi-Fi kalian di Windows dari *Public* ke *Private*, atau izinkan Python/Flask melewati Windows Defender Firewall.
+5. **Tes Alur Integrasi**:
+   Buka aplikasi Pendar di HP -> Masuk ke menu **Check-in** -> Isi kuesioner sampai akhir -> Tekan **Analyze Result**. Aplikasi di HP akan langsung menembak Flask backend di laptop kalian lewat Wi-Fi secara nirkabel, memproses prediksi ML, menyimpannya di Supabase, dan menampilkan hasilnya kembali di HP.
