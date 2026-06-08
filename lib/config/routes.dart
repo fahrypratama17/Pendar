@@ -57,7 +57,10 @@ class AppRoutes {
       ),
       GoRoute(
         path: home,
-        builder: (context, state) => const MainLayoutView(),
+        builder: (context, state) {
+          final initialIndex = state.extra as int? ?? 0;
+          return MainLayoutView(initialIndex: initialIndex);
+        },
       ),
       GoRoute(
         path: mindcheck,
