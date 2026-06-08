@@ -118,6 +118,13 @@ class _RegisterViewState extends State<RegisterView> {
                               width: 1.5,
                             ),
                           ),
+                          errorMaxLines: 3,
+                          errorStyle: const TextStyle(
+                            fontFamily: 'Poppins',
+                            color: Colors.redAccent,
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
@@ -168,6 +175,13 @@ class _RegisterViewState extends State<RegisterView> {
                               color: AppColors.primary,
                               width: 1.5,
                             ),
+                          ),
+                          errorMaxLines: 3,
+                          errorStyle: const TextStyle(
+                            fontFamily: 'Poppins',
+                            color: Colors.redAccent,
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                         validator: (value) {
@@ -222,6 +236,13 @@ class _RegisterViewState extends State<RegisterView> {
                               color: AppColors.primary,
                               width: 1.5,
                             ),
+                          ),
+                          errorMaxLines: 3,
+                          errorStyle: const TextStyle(
+                            fontFamily: 'Poppins',
+                            color: Colors.redAccent,
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                         validator: (value) {
@@ -287,6 +308,13 @@ class _RegisterViewState extends State<RegisterView> {
                               color: AppColors.primary,
                               width: 1.5,
                             ),
+                          ),
+                          errorMaxLines: 3,
+                          errorStyle: const TextStyle(
+                            fontFamily: 'Poppins',
+                            color: Colors.redAccent,
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                         validator: (value) {

@@ -447,10 +447,39 @@ class _HomeViewState extends State<HomeView> {
                   const SizedBox(width: 16),
                   Expanded(
                     flex: 3,
-                    child: Image.asset(
-                      'assets/images/heart.png',
-                      height: 80,
-                      fit: BoxFit.cover,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        ShaderMask(
+                          shaderCallback: (bounds) => const LinearGradient(
+                            colors: [
+                              Color(0xFFE5B2FF),
+                              Color(0xFFB37BFF),
+                            ],
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                          ).createShader(bounds),
+                          child: const Icon(
+                            Icons.favorite,
+                            size: 80,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 4),
+                          child: Text(
+                            _latestMindCheck != null
+                                ? '${100 - _latestMindCheck!.burnoutLevelPct}%'
+                                : '--%',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Poppins',
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
@@ -688,7 +717,26 @@ class _HomeViewState extends State<HomeView> {
 
         if (state is ScheduleLoadSuccess) {
           final upcomingTasks = state.schedules.where((t) => !t.isCompleted).toList();
-          upcomingTasks.sort((a, b) => a.deadline.compareTo(b.deadline));
+          int getPriorityValue(String priority) {
+            switch (priority.toLowerCase()) {
+              case 'high':
+                return 3;
+              case 'medium':
+                return 2;
+              case 'low':
+                return 1;
+              default:
+                return 0;
+            }
+          }
+          upcomingTasks.sort((a, b) {
+            final aVal = getPriorityValue(a.priority);
+            final bVal = getPriorityValue(b.priority);
+            if (aVal != bVal) {
+              return bVal.compareTo(aVal); // High (3) first, then Medium (2), then Low (1)
+            }
+            return a.deadline.compareTo(b.deadline);
+          });
 
           if (upcomingTasks.isEmpty) {
             return Center(
