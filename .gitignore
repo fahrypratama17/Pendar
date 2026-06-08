@@ -49,3 +49,5 @@ app.*.map.json
 *-lock.json
 .a*/
 
+# Custom setup guide
+setup.md

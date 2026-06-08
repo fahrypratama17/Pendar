@@ -55,6 +55,8 @@ flutter_launcher_icons:
   android: "ic_launcher"
   ios: true
   image_path: "assets/icon/pendaricon.png"
+  adaptive_icon_background: "#000000"
+  adaptive_icon_foreground: "assets/icon/pendaricon.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
