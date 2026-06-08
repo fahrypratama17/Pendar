@@ -150,7 +150,7 @@ class InterventionCompleteView extends StatelessWidget {
                       width: double.infinity,
                       height: 56,
                       child: ElevatedButton(
-                        onPressed: () => context.go(AppRoutes.newJournal),
+                        onPressed: () => context.push(AppRoutes.newJournal),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.purple100,
                           foregroundColor: AppColors.purple900,
@@ -246,7 +246,7 @@ class InterventionCompleteView extends StatelessWidget {
           // Check-in (index 2) is already active. Tapping it resets or stays.
           if (index == 2) return;
           // GoRouter back to main layout dashboard
-          context.go(AppRoutes.home);
+          context.go(AppRoutes.home, extra: index);
         },
         behavior: HitTestBehavior.opaque,
         child: Column(

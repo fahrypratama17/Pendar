@@ -58,7 +58,7 @@ class _MindCheckLayoutViewState extends State<MindCheckLayoutView> {
             _goToStep(0);
             return;
           }
-          context.go(AppRoutes.home);
+          context.go(AppRoutes.home, extra: index);
         },
         behavior: HitTestBehavior.opaque,
         child: Column(
@@ -183,7 +183,7 @@ class _MindCheckLayoutViewState extends State<MindCheckLayoutView> {
                   children: [
                     AppHeader(
                       onProfileTap: () {
-                        context.go(AppRoutes.home);
+                        context.go(AppRoutes.home, extra: 4);
                       },
                     ),
                     _buildProgressHeader(),
