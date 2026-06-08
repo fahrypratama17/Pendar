@@ -8,6 +8,7 @@ import '../../services/schedule_bloc.dart';
 import '../../services/schedule_event.dart';
 import '../../services/schedule_state.dart';
 import '../../components/custom_snackbar.dart';
+import '../../models/schedule_model.dart';
 
 class ScheduleView extends StatefulWidget {
   const ScheduleView({super.key});
@@ -574,12 +575,34 @@ class _ScheduleViewState extends State<ScheduleView> {
                               ),
                             );
                           }
+                          final sortedSchedules = List<ScheduleModel>.from(state.schedules);
+                          int getPriorityValue(String priority) {
+                            switch (priority.toLowerCase()) {
+                              case 'high':
+                                return 3;
+                              case 'medium':
+                                return 2;
+                              case 'low':
+                                return 1;
+                              default:
+                                return 0;
+                            }
+                          }
+                          sortedSchedules.sort((a, b) {
+                            final aVal = getPriorityValue(a.priority);
+                            final bVal = getPriorityValue(b.priority);
+                            if (aVal != bVal) {
+                              return bVal.compareTo(aVal); // High (3) first, then Medium (2), then Low (1)
+                            }
+                            return a.deadline.compareTo(b.deadline);
+                          });
+
                           return ListView.builder(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
-                            itemCount: state.schedules.length,
+                            itemCount: sortedSchedules.length,
                             itemBuilder: (context, index) {
-                              final schedule = state.schedules[index];
+                              final schedule = sortedSchedules[index];
                               return GestureDetector(
                                 onTap: () {
                                   context.push(AppRoutes.editSchedule, extra: schedule);

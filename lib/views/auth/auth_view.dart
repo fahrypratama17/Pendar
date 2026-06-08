@@ -122,6 +122,13 @@ class _AuthViewState extends State<AuthView> {
                               width: 1.5,
                             ),
                           ),
+                          errorMaxLines: 3,
+                          errorStyle: const TextStyle(
+                            fontFamily: 'Poppins',
+                            color: Colors.redAccent,
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
@@ -199,6 +206,13 @@ class _AuthViewState extends State<AuthView> {
                               color: AppColors.primary,
                               width: 1.5,
                             ),
+                          ),
+                          errorMaxLines: 3,
+                          errorStyle: const TextStyle(
+                            fontFamily: 'Poppins',
+                            color: Colors.redAccent,
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                         validator: (value) {
