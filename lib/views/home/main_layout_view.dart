@@ -22,11 +22,19 @@ class MainLayoutView extends StatefulWidget {
   });
 
   @override
-  State<MainLayoutView> createState() => _MainLayoutViewState();
+  State<MainLayoutView> createState() => MainLayoutViewState();
 }
 
-class _MainLayoutViewState extends State<MainLayoutView> {
+class MainLayoutViewState extends State<MainLayoutView> {
   late int _currentIndex;
+
+  int get currentIndex => _currentIndex;
+
+  void setTab(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
 
   @override
   void initState() {
